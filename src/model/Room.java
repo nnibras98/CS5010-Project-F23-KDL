@@ -8,23 +8,23 @@ import java.util.List;
  */
 
 public class Room {
-  
+
   private int upperLeftRow;
   private int upperLeftColumn;
   private int lowerRightRow;
   private int lowerRightColumn;
   private int index;
   private String name;
-  
+
   /**
    * constructor for room.
    * 
-   * @param upperLeftRowIn     walls of the room.
-   * @param upperLeftColumnIn  walls of the room.
-   * @param lowerRightRowIn    walls of the room.
-   * @param lowerRightColumnIn walls of the room.
-   * @param nameIn             name of the room.
-   * @param indexIn            placement of the room.
+   * @param upperLeftRowIn              walls of the room.
+   * @param upperLeftColumnIn           walls of the room.
+   * @param lowerRightRowIn             walls of the room.
+   * @param lowerRightColumnumnumnumnIn walls of the room.
+   * @param nameIn                      name of the room.
+   * @param indexIn                     placement of the room.
    */
 
   public Room(int upperLeftRowIn, int upperLeftColumnIn, int lowerRightRowIn,
@@ -61,7 +61,7 @@ public class Room {
   public int getIndex() {
     return index;
   }
-  
+
   /**
    * get neighboring rooms by giving list of all rooms.
    * 
@@ -80,7 +80,7 @@ public class Room {
 
     return neighbors;
   }
-  
+
   /**
    * checks whether two rooms are neighbors or not.
    * 
@@ -88,17 +88,18 @@ public class Room {
    * @return true or false
    */
 
-  // Check if two rooms are neighbors
-  public boolean areNeighbors(Room otherRoom) {
-    // Check if the rooms share a common "wall"
-    boolean verticallyAdjacent = ((this.lowerRightRow == otherRoom.upperLeftRow - 1)
-        || (this.upperLeftRow == otherRoom.lowerRightRow + 1));
-    boolean horizontallyAdjacent = ((this.lowerRightColumn == otherRoom.upperLeftColumn - 1)
-        || (this.upperLeftColumn == otherRoom.lowerRightColumn + 1));
-
-    return (verticallyAdjacent && !horizontallyAdjacent)
-        || (!verticallyAdjacent && horizontallyAdjacent);
+  public boolean areNeighbors(Room other) {
+    // Check if rooms are next to each other horizontally
+    boolean isHorizontalNeighbor = (this.upperLeftRow <= other.lowerRightRow
+        && this.lowerRightRow >= other.upperLeftRow
+        && (this.lowerRightColumn + 1 == other.upperLeftColumn
+            || this.upperLeftColumn - 1 == other.lowerRightColumn));
+    // Check if rooms are next to each other vertically
+    boolean isVerticalNeighbor = (this.upperLeftColumn <= other.lowerRightColumn
+        && this.lowerRightColumn >= other.upperLeftColumn
+        && (this.lowerRightRow + 1 == other.upperLeftRow
+            || this.upperLeftRow - 1 == other.lowerRightRow));
+    return isHorizontalNeighbor || isVerticalNeighbor;
   }
-  
-  
+
 }

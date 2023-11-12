@@ -45,41 +45,100 @@ public class TestController {
    */
   
   public void startGame() {
+    // Print game information and rules
+    System.out.println("Welcome to the Game: " + world.getWorldName());
+    System.out.println("The target character is: " + world.getTargetCharacter().getName());
+    System.out.println("The target character's pet's name is: " + world.getPet().getName());
 
+    // Create human player
+    Player humanPlayer = new HumanPlayer("John", 1, 8, world); // Replace "John" with the desired player name
+    System.out.println("Human player created: " + humanPlayer.getName());
+
+    // Create computer player
+    Player computerPlayer = new ComputerPlayer("ComputerBot", 0, 8, world); // Replace "ComputerBot" with the desired player name
+    System.out.println("Computer player created: " + computerPlayer.getName());
+
+    // Execute the commands to move the pet and target character
+    Pet pet = world.getPet();
+    CommandInterface petMoveCommand = new PetMove(pet);
+
+    TargetCharacter lucky = world.getTargetCharacter();
+    CommandInterface tcMove = new TargetCharacterMove(lucky);
     
-        // Print game information and rules
-        System.out.println("Welcome to the Game: " + world.getWorldName());
-        System.out.println("The target character is : " + world.getTargetCharacter().getName());
-        System.out.println("The target character's pet's name is : " + world.getPet().getName());
-        
-        
-        // Execute the commands to move the pet
-        Pet pet = world.getPet();
-        PetMove petMoveCommand = new PetMove(pet);
-        
-        TargetCharacter lucky = world.getTargetCharacter();
-        TargetCharacterMove tcMove = new TargetCharacterMove(lucky);
-        
-        
-        petMoveCommand.execute();
-        tcMove.execute();
-        System.out.println(pet.getPetPosition());
-        System.out.println(lucky.getCharacterPositionIndex());
-        
-        petMoveCommand.execute();
-        System.out.println(pet.getPetPosition());
-        System.out.println(lucky.getCharacterPositionIndex());
-        
-        petMoveCommand.execute();
-        tcMove.execute();
-        System.out.println(pet.getPetPosition());
-        System.out.println(lucky.getCharacterPositionIndex());// Execute the command to initiate the pet's movement
+    CommandInterface hLookAround = new PlayerLookAround(humanPlayer);
+    
+    CommandInterface cLookAround = new PlayerLookAround(computerPlayer);
+    
+    CommandInterface hMove = new PlayerMove(humanPlayer);
+    
+    CommandInterface cMove = new PlayerMove(computerPlayer);
+    
+    CommandInterface hPickUp = new PlayerPickUpItem(humanPlayer);
+    
+    CommandInterface cPickUp = new PlayerPickUpItem(computerPlayer);
+    
+    CommandInterface  hDrop = new PlayerDropItem(humanPlayer);
 
 
-        
+    petMoveCommand.execute();
+    tcMove.execute();
+    System.out.println("Pet position: " + pet.getPetPosition());
+    System.out.println("Target character position: " + lucky.getCharacterPositionIndex());
 
-      
+    petMoveCommand.execute();
+    System.out.println("Pet position: " + pet.getPetPosition());
+    System.out.println("Target character position: " + lucky.getCharacterPositionIndex());
+
+    petMoveCommand.execute();
+    tcMove.execute();
+    System.out.println("Pet position: " + pet.getPetPosition());
+    System.out.println("Target character position: " + lucky.getCharacterPositionIndex());
+
+    // Make players look around once more
+    System.out.println("Human player looking around:");
+    hLookAround.execute();
+
+    System.out.println("Computer player looking around:");
+    cLookAround.execute();
+    
+//    //make human player move
+//    System.out.println("Human player Room Number:" + humanPlayer.getCurrentRoomIndex());
+//    System.out.println("Human player move:");
+//    hMove.execute();
+//    System.out.println("Human player Room Number:" + humanPlayer.getCurrentRoomIndex());
+//    
+//    //make human player move again
+//    System.out.println("Human player Room Number:" + humanPlayer.getCurrentRoomIndex());
+//    System.out.println("Human player move:");
+//    hMove.execute();
+//    System.out.println("Human player Room Number:" + humanPlayer.getCurrentRoomIndex());
+    
+//    //make computer player move
+//    System.out.println("Computer player Room Number:" + computerPlayer.getCurrentRoomIndex());
+//    System.out.println("Computer player move:");
+//    cMove.execute();
+//    System.out.println("Computer player Room Number:" + computerPlayer.getCurrentRoomIndex());
+//    
+//    //make computer player move again
+//    System.out.println("Computer player Room Number:" + computerPlayer.getCurrentRoomIndex());
+//    System.out.println("Computer player move:");
+//    cMove.execute();
+//    System.out.println("Computer player Room Number:" + computerPlayer.getCurrentRoomIndex());
+    
+    hPickUp.execute();
+//    hPickUp.execute();
+//    hPickUp.execute();
+    
+//    cPickUp.execute();
+    
+    hDrop.execute();
+    
+    hPickUp.execute();
+    
+    
 }
+
+
 
 
   /**

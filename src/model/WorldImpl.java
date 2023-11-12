@@ -72,11 +72,10 @@ public class WorldImpl implements WorldInterface {
   public void setWorldName(String worldName) {
     this.worldName = worldName;
   }
-  
+
   public int getNumRooms() {
     return rooms.size();
-}
-
+  }
 
   @Override
   public void parseWorldFromFile(File file) {
@@ -96,7 +95,6 @@ public class WorldImpl implements WorldInterface {
       // Read Target Character Description
       String targetCharacterDescription = reader.readLine();
       String[] targetCharacterDescriptionParts = targetCharacterDescription.split(" ");
-      
 
       // Read the line with the pet name
       String petDescription = reader.readLine();
@@ -104,16 +102,16 @@ public class WorldImpl implements WorldInterface {
       String petName = petDescriptionParts[0] + " " + petDescriptionParts[1] + " "
           + petDescriptionParts[2];
 
-
       // Read the line with the number of rooms
       this.numRooms = Integer.parseInt(reader.readLine());
-      
-      //Initialize targetCharacter after getting numRooms
+
+      // Initialize targetCharacter after getting numRooms
       if (targetCharacterDescriptionParts.length == 3) {
 
         this.targetCharacter = new TargetCharacter(
             Integer.parseInt(targetCharacterDescriptionParts[0]),
-            targetCharacterDescriptionParts[1] + " " + targetCharacterDescriptionParts[2], numRooms);
+            targetCharacterDescriptionParts[1] + " " + targetCharacterDescriptionParts[2],
+            numRooms);
       }
 
       // Parse the rooms
@@ -143,8 +141,8 @@ public class WorldImpl implements WorldInterface {
 
         }
       }
-      
-      //Initialize the pet after getting room information
+
+      // Initialize the pet after getting room information
       if (petDescriptionParts.length == 3) {
 
         this.pet = new Pet(petName, rooms.get(0), rooms);
@@ -193,4 +191,94 @@ public class WorldImpl implements WorldInterface {
 
   }
 
+  /**
+   * Method to get Room by using index.
+   * 
+   * @param index position of the room.
+   * @return room or null depending on the validity of the index
+   */
+  public Room getRoomByIndex(int index) {
+    for (Room room : rooms) {
+      if (room.getIndex() == index) {
+        return room;
+      }
+    }
+
+    return null;
+  }
+
+  /**
+   * Method to get neighbors of a room by using its index.
+   * 
+   * @param index position of the room.
+   * @return list of neighboring rooms or an empty list if the room is not found
+   */
+  public List<Room> getNeighborsByIndex(int index) {
+    Room currentRoom = getRoomByIndex(index);
+
+    if (currentRoom != null) {
+      return currentRoom.getNeighbors(rooms);
+    } else {
+      return new ArrayList<>(); // Room not found, return an empty list
+    }
+  }
+
+  /**
+   * Retrieves the items present in the specified room.
+   *
+   * @param roomIndex The index of the room to retrieve items from.
+   * @return A list of items in the specified room.
+   */
+  public List<Item> getItemsByRoomIndex(int roomIndex) {
+    List<Item> itemsInRoom = new ArrayList<>();
+
+    // Iterate through the items and find those in the specified room
+    for (Item item : items) {
+      if (item.getRoomIndex() == roomIndex) {
+        itemsInRoom.add(item);
+      }
+    }
+
+    return itemsInRoom;
+  }
+
+  /**
+   * Removes the specified item from the room with the given index.
+   *
+   * @param roomIndex    The index of the room from which to remove the item.
+   * @param itemToRemove The item to be removed from the room.
+   */
+  public void removeItemFromRoom(int roomIndex, Item itemToRemove) {
+    // Find the room with the specified index
+    Room targetRoom = rooms.stream().filter(room -> room.getIndex() == roomIndex).findFirst()
+        .orElse(null);
+
+    if (targetRoom != null) {
+      // Remove the item from the room
+      items.removeIf(item -> item.getRoomIndex() == roomIndex && item.equals(itemToRemove));
+    }
+  }
+  
+  /**
+   * Adds an item to the room with the given index.
+   *
+   * @param roomIndex The index of the room to which the item should be added.
+   * @param item      The item to be added to the room.
+   */
+  public void addItemToRoom(int roomIndex, Item item) {
+      // Find the room with the specified index
+      Room targetRoom = rooms.stream().filter(room -> room.getIndex() == roomIndex).findFirst()
+              .orElse(null);
+
+      if (targetRoom != null) {
+          // Add the item to the room
+        Item newItem = new Item(item.getRoomIndex(), item.getDamage(), item.getName());
+        
+        items.add(newItem);
+
+      }
+  }
 }
+
+
+
