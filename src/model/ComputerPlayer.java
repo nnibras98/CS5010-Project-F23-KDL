@@ -24,6 +24,14 @@ public class ComputerPlayer extends Player {
 
   }
   
+  public int getCurrentRoomIndex() {
+    return currentRoomIndex;
+  }
+
+  public void setCurrentRoomIndex(int currentRoomIndex) {
+    this.currentRoomIndex = currentRoomIndex;
+  }
+  
   @Override
   public void move() {
 
@@ -50,19 +58,15 @@ public class ComputerPlayer extends Player {
         super.setCurrentRoomIndex(selectedRoom.getIndex());
         this.setCurrentRoomIndex(selectedRoom.getIndex());
         
+        setLookAroundUsedLastTurn(false);
+        
       } else {
         System.out.println("Invalid choice. Please choose a valid room.");
       }
     }
   }
 
-  public int getCurrentRoomIndex() {
-    return currentRoomIndex;
-  }
 
-  public void setCurrentRoomIndex(int currentRoomIndex) {
-    this.currentRoomIndex = currentRoomIndex;
-  }
 
   @Override
   public void pickUp() {
@@ -95,6 +99,9 @@ public class ComputerPlayer extends Player {
                     super.addToInventory(selectedItem);
                     // Remove the picked-up item from the room
                     world.removeItemFromRoom(currentRoom.getIndex(), selectedItem);
+                    
+                    setLookAroundUsedLastTurn(false);
+                    
                 } else {
                     System.out.println(super.getName() + " have reached maximum capacity. Cannot pick up more items.");
                 }
@@ -141,6 +148,8 @@ public class ComputerPlayer extends Player {
                   
                   // Add the dropped item to the current room
                   world.addItemToRoom(currentRoom.getIndex(), droppedItem);
+                  
+                  setLookAroundUsedLastTurn(false);
 
               } else {
                   System.out.println("Invalid choice. Please choose a valid item.");
