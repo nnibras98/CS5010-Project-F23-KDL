@@ -119,5 +119,8 @@ public abstract class Player {
   public abstract void pickUp();
 
   public abstract void drop();
+  
+  //
+  public abstract void killAttempt();
 
 }

@@ -81,7 +81,7 @@ public class ComputerPlayer extends Player {
               }
 
 
-              System.out.println("Choose an item to pick up:");
+              System.out.println("Choosing an item to pick up:");
               int choice = (int) (Math.random() * itemsInRoom.size()) + 1;
 
               if (choice >= 1 && choice <= itemsInRoom.size()) {
@@ -109,8 +109,51 @@ public class ComputerPlayer extends Player {
     }
 }
 
+  /**
+   * Allows the player to drop an item from their inventory in the current room.
+   */
   @Override
   public void drop() {
+      // Get the current room of the player
+      Room currentRoom = world.getRoomByIndex(currentRoomIndex);
+
+      if (currentRoom != null) {
+          // Get the items in the player's inventory
+          List<Item> playerInventory = super.getInventory();
+
+          if (!playerInventory.isEmpty()) { // Check if the player has items in the inventory
+
+              System.out.println("Items in your inventory:");
+              for (int i = 0; i < playerInventory.size(); i++) {
+                  System.out.println((i + 1) + ". " + playerInventory.get(i).getName());
+              }
+
+              System.out.println("Choose an item to drop:");
+              int choice = (int) (Math.random() * playerInventory.size()) + 1;
+
+              if (choice >= 1 && choice <= playerInventory.size()) {
+                  // Drop the selected item
+                  Item droppedItem = playerInventory.get(choice - 1);
+                  System.out.println("Dropped " + droppedItem.getName());
+                  
+                  // Implement the logic to update player's inventory or perform other actions
+                  super.removeFromInventory(droppedItem);
+                  
+                  // Add the dropped item to the current room
+                  world.addItemToRoom(currentRoom.getIndex(), droppedItem);
+
+              } else {
+                  System.out.println("Invalid choice. Please choose a valid item.");
+              }
+
+          } else {
+              System.out.println("No items in your inventory to drop.");
+          }
+      }
+  }
+
+  @Override
+  public void killAttempt() {
     // TODO Auto-generated method stub
     
   }

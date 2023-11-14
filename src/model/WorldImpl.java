@@ -13,6 +13,7 @@ public class WorldImpl implements WorldInterface {
   private Pet pet;
   private List<Room> rooms;
   private List<Item> items;
+  private List<Player> players;
   private int numRows;
   private int numColumns;
   private int numRooms;
@@ -28,6 +29,7 @@ public class WorldImpl implements WorldInterface {
 
     this.rooms = new ArrayList<>(); // Initialize the rooms list
     this.items = new ArrayList<>(); // Initialize the items list
+    this.players = new ArrayList<>();//Initialized here but will be updated in controller.
     this.end = false;
     parseWorldFromFile(file);
 
@@ -76,6 +78,19 @@ public class WorldImpl implements WorldInterface {
   public int getNumRooms() {
     return rooms.size();
   }
+  
+  
+  public List<Player> getPlayers() {
+    return players;
+  }
+
+  public void setPlayers(List<Player> players) {
+    this.players = players;
+  }
+  
+  public void addPlayer(Player player) {
+    players.add(player);
+}
 
   @Override
   public void parseWorldFromFile(File file) {

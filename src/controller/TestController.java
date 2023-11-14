@@ -23,8 +23,8 @@ import model.WorldImpl;
 public class TestController {
 
   private WorldImpl world;
-  private List<HumanPlayer> hp;
-  private List<ComputerPlayer> bot;
+//  private List<HumanPlayer> hp;
+//  private List<ComputerPlayer> bot;
   private String file;
   
   /**
@@ -35,8 +35,8 @@ public class TestController {
   public TestController(String file) {
     this.file= file;
     this.world = new WorldImpl(new File(file));
-    this.hp = new ArrayList<>();
-    this.bot = new ArrayList<>();
+//    this.hp = new ArrayList<>();
+//    this.bot = new ArrayList<>();
 
   }
   
@@ -52,10 +52,12 @@ public class TestController {
 
     // Create human player
     Player humanPlayer = new HumanPlayer("John", 1, 8, world); // Replace "John" with the desired player name
+    world.addPlayer(humanPlayer);
     System.out.println("Human player created: " + humanPlayer.getName());
 
     // Create computer player
     Player computerPlayer = new ComputerPlayer("ComputerBot", 0, 8, world); // Replace "ComputerBot" with the desired player name
+    world.addPlayer(computerPlayer);
     System.out.println("Computer player created: " + computerPlayer.getName());
 
     // Execute the commands to move the pet and target character

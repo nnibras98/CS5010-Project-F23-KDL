@@ -56,5 +56,29 @@ public class TargetCharacter {
 
     characterPositionIndex += 1;
   }
+  
+  /**
+   * reduces the health by damage.
+   * @param damage - this is the damage caused.
+   */
+  public void takeDamage(int damage) {
+    
+    if (health < 0 ) {
+     
+      isDead();
+     
+    }
+
+    health -= damage;
+    
+  }
+  
+  /**
+   * Handles the signal when the health reaches 0.
+   */
+  private boolean isDead() {
+      // Implement the logic to handle the signal when the health reaches 0
+      return true;
+  }
 
 }
