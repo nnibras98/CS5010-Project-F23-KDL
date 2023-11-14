@@ -2,6 +2,7 @@ package model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 /**
  * Player Class.
@@ -14,6 +15,7 @@ public abstract class Player {
   private List<Item> inventory;
   private final WorldImpl world;
   private boolean lookAroundUsedLastTurn;
+  Scanner scanner;
 
   /**
    * Player Constructor.
@@ -31,6 +33,7 @@ public abstract class Player {
     this.inventory = new ArrayList<>();
     this.lookAroundUsedLastTurn = false;
     this.world = worldIn;
+    this.scanner = new Scanner(System.in);
 
   }
 
@@ -57,44 +60,44 @@ public abstract class Player {
   public void setInventory(List<Item> inventoryIn) {
     this.inventory = inventoryIn;
   }
-  
+
   protected void setLookAroundUsedLastTurn(boolean usedLastTurn) {
     lookAroundUsedLastTurn = usedLastTurn;
-}
-  
+  }
+
   /**
-   * Adds the specified item to the player's inventory and prints the updated inventory.
+   * Adds the specified item to the player's inventory and prints the updated
+   * inventory.
    *
    * @param itemToAdd The item to be added to the inventory.
    */
   public void addToInventory(Item itemToAdd) {
-      inventory.add(itemToAdd);
-      System.out.println("Added " + itemToAdd.getName() + " to your inventory.");
-      printInventory();
+    inventory.add(itemToAdd);
+    System.out.println("Added " + itemToAdd.getName() + " to your inventory.");
+    printInventory();
   }
-  
+
   /**
    * Removes an item from the player's inventory.
+   * 
    * @param item The item to be removed.
    */
   public void removeFromInventory(Item item) {
-      inventory.remove(item);
-      System.out.println("Removed " + item.getName() + " from inventory.");
-      printInventory();
+    inventory.remove(item);
+    System.out.println("Removed " + item.getName() + " from inventory.");
+    printInventory();
   }
-
 
   /**
    * Prints the player's inventory.
    */
   public void printInventory() {
-      System.out.println("Your Inventory:");
-      for (Item item : inventory) {
-          System.out.println("- " + item.getName());
-      }
-      System.out.println("End of Inventory");
+    System.out.println("Your Inventory:");
+    for (Item item : inventory) {
+      System.out.println("- " + item.getName());
+    }
+    System.out.println("End of Inventory");
   }
-
 
   //
   public void lookAround() {
@@ -112,78 +115,64 @@ public abstract class Player {
       for (Room neighbor : neighbors) {
         System.out.println(neighbor.getName());
       }
-      
+
       setLookAroundUsedLastTurn(true);
-      
+
     } else {
       System.out.println("Player is not in a valid room.");
     }
 
   }
-  
-  /**
-   * Attempts to poke the target character, reducing their health by 1.
-   * This action can only be performed when the player's inventory is empty.
-   */
-  public void pokeTarget() {
-      if (getInventory().isEmpty()) {
-          // Reduce the health of the target character by 1
-          world.getTargetCharacter().takeDamage(1);
-          System.out.println("Poked the target character. Health reduced by 1, the current health is " 
-          + world.getTargetCharacter().getHealth());
-      } else {
-          System.out.println("Cannot poke the target character with items in the inventory.");
-      }
-  }
 
-  
+
   //
   public void killAttempt() {
-    
-    // Unseen attacks are successful also cat should not not be present in the room. 
+
+    // Unseen attacks are successful also cat should not not be present in the room.
 
     if (canMakeAttempt()) {
-
+      
       int damage = computeDamage();
       world.getTargetCharacter().takeDamage(damage);
       System.out.println("Attempt successful! " + world.getTargetCharacter().getName() + " loses "
           + damage + " hit point, the current health is " + world.getTargetCharacter().getHealth());
 
       removeItemUsedInAttempt();
+      
+      setLookAroundUsedLastTurn(false);
+      
     } else {
       // Seen attacks are automatically stopped
       System.out.println("Attempt could not be made. No damage done.");
     }
 
   }
-  
+
   /**
    * Checks if the player can make an attempt on the target character's life.
    *
    * @return True if the player can make an attempt, false otherwise.
    */
   private boolean canMakeAttempt() {
-    
-      // Check Inventory
-      boolean inventoryEmpty = getInventory().isEmpty();
-        
-      // Check if the cat is in the room
-      boolean catInRoom = world.getPet().getPetPosition() == currentRoomIndex;
 
-      // Check if there are other players in the room
-      boolean otherPlayersInRoom = world.getPlayers().stream()
-              .filter(player -> player != this)
-              .anyMatch(player -> player.getCurrentRoomIndex() == currentRoomIndex);
+    // Check Inventory
+    boolean inventoryEmpty = getInventory().isEmpty();
 
-      // Check if the previous turn used lookAround
-      boolean previousTurnLookAround = islookAroundUsedLastTurn();
+    // Check if the cat is in the room
+    boolean catInRoom = world.getPet().getPetPosition() == currentRoomIndex;
 
-      // Implement additional conditions based on your game rules
-      // For example, you may want to add more checks depending on the game state
+    // Check if there are other players in the room
+    boolean otherPlayersInRoom = world.getPlayers().stream().filter(player -> player != this)
+        .anyMatch(player -> player.getCurrentRoomIndex() == currentRoomIndex);
 
-      return !inventoryEmpty && !catInRoom && !otherPlayersInRoom && !previousTurnLookAround;
+    // Check if the previous turn used lookAround
+    boolean previousTurnLookAround = islookAroundUsedLastTurn();
+
+    // Implement additional conditions based on your game rules
+    // For example, you may want to add more checks depending on the game state
+
+    return !inventoryEmpty && !catInRoom && !otherPlayersInRoom && !previousTurnLookAround;
   }
-
 
   private boolean islookAroundUsedLastTurn() {
     return lookAroundUsedLastTurn;
@@ -195,10 +184,32 @@ public abstract class Player {
    * @return The amount of damage.
    */
   private int computeDamage() {
-    // Implement logic to compute damage based on the item used in the attempt
-    // You can check the player's inventory for the item used
-    // Return the appropriate damage value
-    return 1; // Placeholder, replace with actual logic
+    if (getInventory().isEmpty()) {
+      // Reduce the health of the target character by 1
+      world.getTargetCharacter().takeDamage(1);
+      System.out.println("Poked the target character. Health reduced by 1, the current health is "
+          + world.getTargetCharacter().getHealth());
+      return 1;
+    } else {
+      // Prompt the player to choose an item
+      System.out.println("Choose an item to use in the attempt:");
+      for (int i = 0; i < getInventory().size(); i++) {
+        System.out.println((i + 1) + ". " + getInventory().get(i).getName() 
+        + " , " + "Hit Points Available- " + getInventory().get(i).getDamage());
+        
+      }
+
+      int choice = scanner.nextInt();
+      if (choice >= 1 && choice <= getInventory().size()) {
+        // Return the damage value based on the chosen item
+        Item chosenItem = getInventory().get(choice - 1);
+        System.out.println("Used " + chosenItem.getName() + " in the attempt.");
+        return chosenItem.getDamage();
+      } else {
+        System.out.println("Invalid choice. No damage done.");
+        return 0; 
+      }
+    }
   }
 
   /**
@@ -210,18 +221,14 @@ public abstract class Player {
     // You can iterate through the player's inventory and remove the relevant item
     // You may need to adjust this based on your item and inventory implementation
   }
-  
+
   //
   public abstract void move();
-  
+
   //
   public abstract void pickUp();
-  
+
   //
   public abstract void drop();
-
-
-  
-
 
 }
