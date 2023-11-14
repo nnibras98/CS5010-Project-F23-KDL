@@ -213,14 +213,23 @@ public abstract class Player {
   }
 
   /**
-   * Removes the item used in the attempt from the player's inventory.
+   * Removes the item used in the attempt from the player's inventory and the world.
    */
   private void removeItemUsedInAttempt() {
-    // Implement logic to remove the item used in the attempt from the player's
-    // inventory
-    // You can iterate through the player's inventory and remove the relevant item
-    // You may need to adjust this based on your item and inventory implementation
+      if (!getInventory().isEmpty()) {
+          // If the inventory is not empty, prompt the player to choose an item to remove
+          int choice = scanner.nextInt();
+          if (choice >= 1 && choice <= getInventory().size()) {
+              // Remove the chosen item from the player's inventory
+              Item removedItem = getInventory().remove(choice - 1);
+
+              // Remove the item from the world
+              world.removeItemFromRoom(currentRoomIndex, removedItem);;
+          }
+      }
   }
+
+
 
   //
   public abstract void move();
