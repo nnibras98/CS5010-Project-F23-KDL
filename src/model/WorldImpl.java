@@ -79,6 +79,10 @@ public class WorldImpl implements WorldInterface {
     return rooms.size();
   }
   
+  public int getNumItems() {
+    return items.size();
+  }
+  
   
   public List<Player> getPlayers() {
     return players;

@@ -16,6 +16,14 @@ public class GameFacade {
     this.targetCharacter = world.getTargetCharacter();
   }
   
+  
+  
+  public WorldImpl getWorld() {
+    return world;
+  }
+
+
+
   //just added this to make it more modular
   public void playerAction(Player player, CommandInterface commandType) {
     
