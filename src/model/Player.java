@@ -135,7 +135,7 @@ public abstract class Player {
       int damage = computeDamage();
       world.getTargetCharacter().takeDamage(damage);
       System.out.println("Attempt successful! " + world.getTargetCharacter().getName() + " loses "
-          + damage + " hit point, the current health is " + world.getTargetCharacter().getHealth());
+          + damage + " health point(s), the current health is: " + world.getTargetCharacter().getHealth());
 
       removeItemUsedInAttempt();
       
@@ -195,7 +195,7 @@ public abstract class Player {
       System.out.println("Choose an item to use in the attempt:");
       for (int i = 0; i < getInventory().size(); i++) {
         System.out.println((i + 1) + ". " + getInventory().get(i).getName() 
-        + " , " + "Hit Points Available- " + getInventory().get(i).getDamage());
+        + " , " + "Hit point(s) for this item: " + getInventory().get(i).getDamage());
         
       }
 

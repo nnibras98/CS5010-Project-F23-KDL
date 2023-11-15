@@ -51,7 +51,7 @@ public class TestController {
     System.out.println("The target character's pet's name is: " + world.getPet().getName());
 
     // Create human player
-    Player humanPlayer = new HumanPlayer("John", 1, 8, world); // Replace "John" with the desired player name
+    Player humanPlayer = new HumanPlayer("John", 1, 1, world); // Replace "John" with the desired player name
     world.addPlayer(humanPlayer);
     System.out.println("Human player created: " + humanPlayer.getName());
 
@@ -80,6 +80,8 @@ public class TestController {
     CommandInterface cPickUp = new PlayerPickUpItem(computerPlayer);
     
     CommandInterface  hDrop = new PlayerDropItem(humanPlayer);
+    
+    CommandInterface hKill  = new PlayerKillAttempt(humanPlayer);
 
 
     petMoveCommand.execute();
@@ -127,15 +129,17 @@ public class TestController {
 //    cMove.execute();
 //    System.out.println("Computer player Room Number:" + computerPlayer.getCurrentRoomIndex());
     
-    hPickUp.execute();
+//    hPickUp.execute();
 //    hPickUp.execute();
 //    hPickUp.execute();
     
 //    cPickUp.execute();
     
-    hDrop.execute();
+//    hDrop.execute();
     
     hPickUp.execute();
+    
+    hKill.execute();
     
     
 }

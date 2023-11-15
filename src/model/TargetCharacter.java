@@ -55,6 +55,8 @@ public class TargetCharacter {
     }
 
     characterPositionIndex += 1;
+    
+    System.out.println("Doctor Lucky has moved to - " + characterPositionIndex);
   }
   
   /**
