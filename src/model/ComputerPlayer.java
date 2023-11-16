@@ -160,12 +160,6 @@ public class ComputerPlayer extends Player {
           }
       }
   }
-
-  @Override
-  public void killAttempt() {
-    // TODO Auto-generated method stub
-    
-  }
   
   
 }

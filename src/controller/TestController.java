@@ -56,7 +56,7 @@ public class TestController {
     System.out.println("Human player created: " + humanPlayer.getName());
 
     // Create computer player
-    Player computerPlayer = new ComputerPlayer("ComputerBot", 0, 8, world); // Replace "ComputerBot" with the desired player name
+    Player computerPlayer = new ComputerPlayer("ComputerBot", 1, 8, world); // Replace "ComputerBot" with the desired player name
     world.addPlayer(computerPlayer);
     System.out.println("Computer player created: " + computerPlayer.getName());
 
@@ -82,28 +82,31 @@ public class TestController {
     CommandInterface  hDrop = new PlayerDropItem(humanPlayer);
     
     CommandInterface hKill  = new PlayerKillAttempt(humanPlayer);
+    
+    CommandInterface cKill  = new PlayerKillAttempt(computerPlayer);
+    
 
 
-    petMoveCommand.execute();
-    tcMove.execute();
-    System.out.println("Pet position: " + pet.getPetPosition());
-    System.out.println("Target character position: " + lucky.getCharacterPositionIndex());
-
-    petMoveCommand.execute();
-    System.out.println("Pet position: " + pet.getPetPosition());
-    System.out.println("Target character position: " + lucky.getCharacterPositionIndex());
-
-    petMoveCommand.execute();
-    tcMove.execute();
-    System.out.println("Pet position: " + pet.getPetPosition());
-    System.out.println("Target character position: " + lucky.getCharacterPositionIndex());
-
-    // Make players look around once more
-    System.out.println("Human player looking around:");
-    hLookAround.execute();
-
-    System.out.println("Computer player looking around:");
-    cLookAround.execute();
+//    petMoveCommand.execute();
+//    tcMove.execute();
+//    System.out.println("Pet position: " + pet.getPetPosition());
+//    System.out.println("Target character position: " + lucky.getCharacterPositionIndex());
+//
+//    petMoveCommand.execute();
+//    System.out.println("Pet position: " + pet.getPetPosition());
+//    System.out.println("Target character position: " + lucky.getCharacterPositionIndex());
+//
+//    petMoveCommand.execute();
+//    tcMove.execute();
+//    System.out.println("Pet position: " + pet.getPetPosition());
+//    System.out.println("Target character position: " + lucky.getCharacterPositionIndex());
+//
+//    // Make players look around once more
+//    System.out.println("Human player looking around:");
+//    hLookAround.execute();
+//
+//    System.out.println("Computer player looking around:");
+//    cLookAround.execute();
     
 //    //make human player move
 //    System.out.println("Human player Room Number:" + humanPlayer.getCurrentRoomIndex());
@@ -133,13 +136,16 @@ public class TestController {
 //    hPickUp.execute();
 //    hPickUp.execute();
     
-//    cPickUp.execute();
+    cPickUp.execute();
     
 //    hDrop.execute();
     
-    hPickUp.execute();
+
+//    cPickUp.execute();
     
-    hKill.execute();
+//    hKill.execute();
+    
+    cKill.execute();
     
     
 }

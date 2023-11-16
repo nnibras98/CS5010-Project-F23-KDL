@@ -9,11 +9,12 @@ public class TargetCharacter {
   private String name;
   private int characterPositionIndex;
   private int numRooms;
-  
+
   /**
    * Constructor for target character.
+   * 
    * @param healthIn health of target.
-   * @param nameIn name of target.
+   * @param nameIn   name of target.
    */
 
   public TargetCharacter(int healthIn, String nameIn, int numRoomsIn) {
@@ -42,45 +43,32 @@ public class TargetCharacter {
   public int getCharacterPositionIndex() {
     return characterPositionIndex;
   }
-  
+
   /**
    * moves character forward by 1 room.
    */
-  
+
   public void move() {
-    
-    if (characterPositionIndex > numRooms - 1 ) {
-      
+
+    if (characterPositionIndex > numRooms - 1) {
+
       characterPositionIndex = 0;
     }
 
     characterPositionIndex += 1;
-    
-    System.out.println("Doctor Lucky has moved to - " + characterPositionIndex);
+
   }
-  
+
   /**
    * reduces the health by damage.
+   * 
    * @param damage - this is the damage caused.
    */
   public void takeDamage(int damage) {
     
-    if (health < 0 ) {
-     
-      isDead();
-     
-    }
+    int damageVal = health - damage;
+    setHealth(damageVal);
 
-    health -= damage;
-    
-  }
-  
-  /**
-   * Handles the signal when the health reaches 0.
-   */
-  private boolean isDead() {
-      // Implement the logic to handle the signal when the health reaches 0
-      return true;
   }
 
 }

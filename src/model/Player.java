@@ -1,7 +1,9 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Random;
 import java.util.Scanner;
 
 /**
@@ -15,6 +17,7 @@ public abstract class Player {
   private List<Item> inventory;
   private final WorldImpl world;
   private boolean lookAroundUsedLastTurn;
+  private int damage;
   Scanner scanner;
 
   /**
@@ -124,23 +127,21 @@ public abstract class Player {
 
   }
 
-
   //
   public void killAttempt() {
 
     // Unseen attacks are successful also cat should not not be present in the room.
 
     if (canMakeAttempt()) {
-      
-      int damage = computeDamage();
+
+      doDamage();
       world.getTargetCharacter().takeDamage(damage);
       System.out.println("Attempt successful! " + world.getTargetCharacter().getName() + " loses "
-          + damage + " health point(s), the current health is: " + world.getTargetCharacter().getHealth());
+          + damage + " health point(s), the current health is: "
+          + world.getTargetCharacter().getHealth());
 
-      removeItemUsedInAttempt();
-      
       setLookAroundUsedLastTurn(false);
-      
+
     } else {
       // Seen attacks are automatically stopped
       System.out.println("Attempt could not be made. No damage done.");
@@ -155,9 +156,6 @@ public abstract class Player {
    */
   private boolean canMakeAttempt() {
 
-    // Check Inventory
-    boolean inventoryEmpty = getInventory().isEmpty();
-
     // Check if the cat is in the room
     boolean catInRoom = world.getPet().getPetPosition() == currentRoomIndex;
 
@@ -171,7 +169,7 @@ public abstract class Player {
     // Implement additional conditions based on your game rules
     // For example, you may want to add more checks depending on the game state
 
-    return !inventoryEmpty && !catInRoom && !otherPlayersInRoom && !previousTurnLookAround;
+    return !catInRoom && !otherPlayersInRoom && !previousTurnLookAround;
   }
 
   private boolean islookAroundUsedLastTurn() {
@@ -183,53 +181,49 @@ public abstract class Player {
    *
    * @return The amount of damage.
    */
-  private int computeDamage() {
+  private void doDamage() {
     if (getInventory().isEmpty()) {
       // Reduce the health of the target character by 1
-      world.getTargetCharacter().takeDamage(1);
-      System.out.println("Poked the target character. Health reduced by 1, the current health is "
-          + world.getTargetCharacter().getHealth());
-      return 1;
+      System.out.println("Poked the target character. Health reduced by 1");
+      damage = 1;
     } else {
-      // Prompt the player to choose an item
-      System.out.println("Choose an item to use in the attempt:");
-      for (int i = 0; i < getInventory().size(); i++) {
-        System.out.println((i + 1) + ". " + getInventory().get(i).getName() 
-        + " , " + "Hit point(s) for this item: " + getInventory().get(i).getDamage());
-        
-      }
+      if (this instanceof ComputerPlayer) {
+        // If the current player is a ComputerPlayer, automatically choose the item with
+        // the highest damage
+        Item chosenItem = getInventory().stream().max(Comparator.comparingInt(Item::getDamage))
+            .orElse(null);
 
-      int choice = scanner.nextInt();
-      if (choice >= 1 && choice <= getInventory().size()) {
-        // Return the damage value based on the chosen item
-        Item chosenItem = getInventory().get(choice - 1);
-        System.out.println("Used " + chosenItem.getName() + " in the attempt.");
-        return chosenItem.getDamage();
+        if (chosenItem != null) {
+          System.out.println("Used " + chosenItem.getName() + " in the attempt.");
+          damage = chosenItem.getDamage();
+          world.removeItemFromRoom(currentRoomIndex, chosenItem);
+          removeFromInventory(chosenItem);
+        } else {
+          System.out.println("No valid item found. No damage done.");
+          damage = 0;
+        }
       } else {
-        System.out.println("Invalid choice. No damage done.");
-        return 0; 
+        // If the current player is a HumanPlayer, prompt the player to choose an item
+        System.out.println("Choose an item to use in the attempt:");
+        for (int i = 0; i < getInventory().size(); i++) {
+          System.out.println((i + 1) + ". " + getInventory().get(i).getName() + " , "
+              + "Hit point(s) for this item: " + getInventory().get(i).getDamage());
+        }
+
+        int choice = scanner.nextInt();
+        if (choice >= 1 && choice <= getInventory().size()) {
+          // Return the damage value based on the chosen item
+          Item chosenItem = getInventory().get(choice - 1);
+          System.out.println("Used " + chosenItem.getName() + " in the attempt.");
+          damage = chosenItem.getDamage();
+          world.removeItemFromRoom(currentRoomIndex, chosenItem);
+        } else {
+          System.out.println("Invalid choice. No damage done.");
+          damage = 0;
+        }
       }
     }
   }
-
-  /**
-   * Removes the item used in the attempt from the player's inventory and the world.
-   */
-  private void removeItemUsedInAttempt() {
-      if (!getInventory().isEmpty()) {
-          // If the inventory is not empty, prompt the player to choose an item to remove
-          int choice = scanner.nextInt();
-          if (choice >= 1 && choice <= getInventory().size()) {
-              // Remove the chosen item from the player's inventory
-              Item removedItem = getInventory().remove(choice - 1);
-
-              // Remove the item from the world
-              world.removeItemFromRoom(currentRoomIndex, removedItem);;
-          }
-      }
-  }
-
-
 
   //
   public abstract void move();

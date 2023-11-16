@@ -56,10 +56,24 @@ public class Pet {
   
   //DFS implementation of move.
   public void move() {
-    visitedRooms.add(currentRoom);
-    
     // Get a list of all neighboring rooms
     List<Room> neighboringRooms = currentRoom.getNeighbors(allRooms);
+
+    // Check if all neighboring rooms have been visited
+    boolean allVisited = true;
+    for (Room neighbor : neighboringRooms) {
+        if (!visitedRooms.contains(neighbor)) {
+            allVisited = false;
+            break;
+        }
+    }
+
+    // If all neighboring rooms have been visited, reset the visited status
+    if (allVisited) {
+        visitedRooms.clear();
+    }
+
+    visitedRooms.add(currentRoom);
 
     // Find the first unvisited neighboring room
     Room nextRoom = null;
@@ -74,8 +88,10 @@ public class Pet {
     if (nextRoom != null) {
         currentRoom = nextRoom;
         petPosition = currentRoom.getIndex();
+        System.out.println("Pet moved to room " + petPosition);
     }
 }
+
 
 
 

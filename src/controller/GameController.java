@@ -29,6 +29,7 @@ public class GameController {
 
     setupHandler.showIntro();
     setupHandler.playerCreation();
+    setupHandler.takeTurn();
 
   }
 
