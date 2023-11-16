@@ -28,6 +28,7 @@ public class GameController {
   public void startGame() {
 
     setupHandler.showIntro();
+    setupHandler.playerCreation();
 
   }
 

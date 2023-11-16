@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Scanner;
 
+import model.ComputerPlayer;
+import model.HumanPlayer;
 import model.Item;
 import model.MapImageCreation;
 import model.Player;
@@ -147,8 +149,100 @@ public class GameSetupHandler {
   }
 
   public void playerCreation() {
-//TODO
+    // Prompt user for game setup details
+    System.out.println("Let's set up the game by adding players!");
+
+    // Prompt for the number of computer players
+    System.out.print("Enter the number of computer players: ");
+    int numComputerPlayers = scanner.nextInt();
+    scanner.nextLine(); // Consume the newline character
+
+    // Prompt for the number of human players
+    System.out.print("Enter the number of human players: ");
+    int numHumanPlayers = scanner.nextInt();
+    scanner.nextLine(); // Consume the newline character
+    
+    System.out.println("");
+
+ // Create players based on user input
+ // Adjust this based on your player creation logic
+ for (int i = 0; i < numComputerPlayers; i++) {
+     // Create computer player and add to the world
+     int randomEntryRoomIndex = (int) (Math.random() * gameFacade.getWorld().getNumRooms()); // Random entry room index
+     int randomCarryingCapacity = (int) (Math.random() * 50); // Random carrying capacity
+
+     Player computerPlayer = new ComputerPlayer("Computer Player " + (i + 1), randomCarryingCapacity, randomEntryRoomIndex, gameFacade.getWorld());
+     gameFacade.getWorld().addPlayer(computerPlayer);
+ }
+
+
+    for (int i = 0; i < numHumanPlayers; i++) {
+        // Prompt for human player details
+        System.out.println("Enter details for Human Player " + (i + 1));
+
+        // Prompt for player name
+        System.out.print("Enter player name: ");
+        String playerName = scanner.nextLine();
+
+        // Prompt for entry room
+        System.out.print("Enter entry room index: ");
+        int entryRoomIndex = scanner.nextInt();
+        scanner.nextLine(); // Consume the newline character
+
+        // Prompt for carrying capacity
+        System.out.print("Enter carrying capacity: ");
+        int carryingCapacity = scanner.nextInt();
+        scanner.nextLine(); // Consume the newline character
+
+        // Create human player with specified details and add to the world
+        Player humanPlayer = new HumanPlayer(playerName, carryingCapacity, entryRoomIndex, gameFacade.getWorld());
+        gameFacade.getWorld().addPlayer(humanPlayer);
+        
+        System.out.println("");
+    }
+    
+ // Prompt user for seeing the map
+    System.out.print("Do you want to see the player info? (y/n): ");
+    String input = scanner.nextLine().toLowerCase();
+    System.out.println("");
+    
+    if (input.equals("y")) {
+      
+      viewPlayerInfo();
+      
   }
+    
+    
+
+}
+  
+  private void viewPlayerInfo() {
+    // Get the list of players from the world
+    List<Player> players = gameFacade.getWorld().getPlayers();
+
+    if (!players.isEmpty()) {
+        System.out.println("Player Information:");
+
+        // Display information for each player
+        for (Player player : players) {
+            System.out.println("Player Name: " + player.getName());
+            System.out.println("Entry Room: " + player.getCurrentRoomIndex());
+            System.out.println("Carrying Capacity: " + player.getMaxCarryCapacity());
+
+            if (player instanceof HumanPlayer) {
+                System.out.println("Player Type: Human Player");
+            } else if (player instanceof ComputerPlayer) {
+                System.out.println("Player Type: Computer Player");
+            }
+
+            System.out.println("");
+        }
+    } else {
+        System.out.println("No players in the world.");
+    }
+}
+
+
 
   public void takeTurns() {
 //TODO
