@@ -1,93 +1,91 @@
 package model;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.List;
 import javax.imageio.ImageIO;
 
 /**
  * Image Creation Class.
  */
-
 public class MapImageCreation {
-  
+
   /**
-   * takes in the file and forms the image.
-   * @param inputString file
+   * Takes in the world and forms the image.
+   *
+   * @param world World instance containing information about rooms, players, items, etc.
+   * @param filename Output filename for the generated image.
    */
-  public MapImageCreation(String inputString) {
-
+  public MapImageCreation(WorldImpl world) {
     try {
-
-      // Read the text file with room coordinates and dimensions
-      BufferedReader reader = new BufferedReader(new FileReader(inputString));
-
-      // Parse the world description
-      String worldDescription = reader.readLine();
-      String[] worldDescriptionParts = worldDescription.split(" ");
-      int numRows = Integer.parseInt(worldDescriptionParts[0]);
-      int numColumns = Integer.parseInt(worldDescriptionParts[1]);
-
-      // Create a BufferedImage for the mansion with white background
-      int width = numColumns * 30;
-      int height = numRows * 30;
-      BufferedImage mansionImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-      Graphics2D g2d = mansionImage.createGraphics();
+      // Create a BufferedImage for the world with white background
+      int width = world.getNumCols() * 30;
+      int height = world.getNumRows() * 30;
+      BufferedImage worldImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+      Graphics2D g2d = worldImage.createGraphics();
       g2d.setColor(Color.WHITE);
       g2d.fillRect(0, 0, width, height);
 
-      // Parse the rooms
-      for (int i = 0; i <= 22; i++) {
-        String roomInfo = reader.readLine();
-        String[] roomInfoParts = roomInfo.split(" ");
-        if (roomInfoParts.length >= 5) {
-          int upperLeftRow = Integer.parseInt(roomInfoParts[0]);
-          int upperLeftColumn = Integer.parseInt(roomInfoParts[1]);
-          int lowerRightRow = Integer.parseInt(roomInfoParts[2]);
-          int lowerRightColumn = Integer.parseInt(roomInfoParts[3]);
+      // Draw rooms
+      drawRooms(world, g2d);
 
-          // Combine the remaining parts to form the room name
-          StringBuilder roomNameBuilder = new StringBuilder();
-          for (int j = 4; j < roomInfoParts.length; j++) {
-            roomNameBuilder.append(roomInfoParts[j]);
-            if (j < roomInfoParts.length - 1) {
-              roomNameBuilder.append(" ");
-            }
-          }
-          String roomName = roomNameBuilder.toString();
-
-          int roomWidth = (lowerRightColumn - upperLeftColumn + 1) * 30;
-          int roomHeight = (lowerRightRow - upperLeftRow + 1) * 30;
-
-          // Set the fill color (
-          g2d.setColor(Color.GRAY);
-          g2d.fillRect(upperLeftColumn * 30, upperLeftRow * 30, roomWidth, roomHeight);
-
-          // Set the border color
-          g2d.setColor(Color.BLACK);
-
-          // Draw the filled rectangle border
-          g2d.drawRect(upperLeftColumn * 30, upperLeftRow * 30, roomWidth, roomHeight);
-
-          // Room Name
-          g2d.setColor(Color.BLACK); // Adjust the color as needed
-          g2d.drawString(roomName, (upperLeftColumn * 30) + 5, (upperLeftRow * 30) + 15);
-        }
-      }
-
-      // Save the mansion image
-      ImageIO.write(mansionImage, "png", new File("res/mansion.png"));
-
-      reader.close();
-
-      System.out.println("Mansion image saved successfully.");
+      // Save the world image
+      ImageIO.write(worldImage, "png", new File("res/mansion.png"));
+      openImageInPhotos("res/mansion.png");
     } catch (IOException e) {
       System.err.println("An error occurred while saving the image.");
+      e.printStackTrace();
     }
+  }
 
+  /**
+   * Draws rooms on the image.
+   *
+   * @param world World instance containing information about rooms.
+   * @param g2d   Graphics2D object for drawing.
+   */
+  private void drawRooms(WorldImpl world, Graphics2D g2d) {
+    for (Room room : world.getRooms()) {
+      int upperLeftRow = room.getUpperLeftRow();
+      int upperLeftColumn = room.getUpperLeftColumn();
+      int lowerRightRow = room.getLowerRightRow();
+      int lowerRightColumn = room.getLowerRightColumn();
+
+      int roomWidth = (lowerRightColumn - upperLeftColumn + 1) * 30;
+      int roomHeight = (lowerRightRow - upperLeftRow + 1) * 30;
+
+      g2d.setColor(Color.GRAY);
+      g2d.fillRect(upperLeftColumn * 30, upperLeftRow * 30, roomWidth, roomHeight);
+
+      g2d.setColor(Color.BLACK);
+      g2d.drawRect(upperLeftColumn * 30, upperLeftRow * 30, roomWidth, roomHeight);
+
+      g2d.setColor(Color.BLACK);
+      g2d.drawString(room.getName(), (upperLeftColumn * 30) + 5, (upperLeftRow * 30) + 15);
+    }
+  }
+
+
+  /**
+   * Opens the image in the default image viewer.
+   *
+   * @param filename Filename of the image to be opened.
+   */
+  public void openImageInPhotos(String filename) {
+    // Open the image using the default associated application
+    try {
+      String[] commands = { "cmd.exe", "/c", "start", "\"DummyTitle\"", "\"" + filename + "\"" };
+      Process p = Runtime.getRuntime().exec(commands);
+      System.out.println("Map opened in default photo viewer");
+    } catch (IOException e) {
+      System.err.println("An error occurred while opening the image in Photos.");
+      e.printStackTrace();
+    }
   }
 }

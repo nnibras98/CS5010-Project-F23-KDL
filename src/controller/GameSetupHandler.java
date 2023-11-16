@@ -1,9 +1,11 @@
 package controller;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Scanner;
 
 import model.Item;
+import model.MapImageCreation;
 import model.Player;
 import model.Room;
 import model.WorldImpl;
@@ -29,18 +31,31 @@ public class GameSetupHandler {
     
     // Prompt user for rules
     System.out.print("Do you want to see the game info and rules? (y/n): ");
-    String input = scanner.nextLine().toLowerCase();
+    String input1 = scanner.nextLine().toLowerCase();
     System.out.println("");
     
-    if (input.equals("y")) {
+    if (input1.equals("y")) {
       System.out.println("There are " + gameFacade.getWorld().getNumRooms() + "room(s) in the game");
       printRoomInfo(gameFacade.getWorld());
       System.out.println("There are " + gameFacade.getWorld().getNumItems() + "item(s) in the game");
       printItemInfo(gameFacade.getWorld());
       printGameRules();
   }
+    
+    // Prompt user for seeing the map
+    System.out.print("Do you want to see the map? (y/n): ");
+    String input2 = scanner.nextLine().toLowerCase();
+    System.out.println("");
+    
+    if (input2.equals("y")) {
+      
+      new MapImageCreation(gameFacade.getWorld());
+      
+  }
 
   }
+  
+
 
   private void printRoomInfo(WorldImpl world) {
     // Get all rooms in the world
@@ -127,6 +142,8 @@ public class GameSetupHandler {
         .println("    a. A player successfully kills the target character, winning the game.");
     System.out.println(
         "    b. The maximum number of turns is reached, and the target character escapes, hence nobody wins.");
+    System.out.println("");
+    System.out.println("");
   }
 
   public void playerCreation() {

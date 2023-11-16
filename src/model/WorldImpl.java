@@ -34,6 +34,20 @@ public class WorldImpl implements WorldInterface {
     parseWorldFromFile(file);
 
   }
+  
+  
+
+  public int getNumRows() {
+    return numRows;
+  }
+
+
+
+  public int getNumCols() {
+    return numColumns;
+  }
+
+
 
   public TargetCharacter getTargetCharacter() {
     return targetCharacter;
