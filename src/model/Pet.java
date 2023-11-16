@@ -88,7 +88,6 @@ public class Pet {
     if (nextRoom != null) {
         currentRoom = nextRoom;
         petPosition = currentRoom.getIndex();
-        System.out.println("Pet moved to room " + petPosition);
     }
 }
 

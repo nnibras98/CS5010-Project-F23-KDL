@@ -36,8 +36,8 @@ public class MapImageCreation {
       drawRooms(world, g2d);
 
       // Save the world image
-      ImageIO.write(worldImage, "png", new File("res/mansion.png"));
-      openImageInPhotos("res/mansion.png");
+      ImageIO.write(worldImage, "png", new File("C:\\CS5010 WorkSpace\\Game-Development-CS5010-Project\\res\\mansion.png"));
+      openImageInPhotos("C:\\\\CS5010 WorkSpace\\\\Game-Development-CS5010-Project\\\\res\\\\mansion.png");
     } catch (IOException e) {
       System.err.println("An error occurred while saving the image.");
       e.printStackTrace();
@@ -83,6 +83,7 @@ public class MapImageCreation {
       String[] commands = { "cmd.exe", "/c", "start", "\"DummyTitle\"", "\"" + filename + "\"" };
       Process p = Runtime.getRuntime().exec(commands);
       System.out.println("Map opened in default photo viewer");
+      System.out.println("");
     } catch (IOException e) {
       System.err.println("An error occurred while opening the image in Photos.");
       e.printStackTrace();

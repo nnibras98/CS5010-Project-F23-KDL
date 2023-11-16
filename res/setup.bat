@@ -1,0 +1,1 @@
+java -jar JAR.jar && cmd /k
