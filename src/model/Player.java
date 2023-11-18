@@ -15,7 +15,7 @@ public abstract class Player {
   private final int maxCarryCapacity;
   private int currentRoomIndex;
   private List<Item> inventory;
-  private final WorldImpl world;
+  private final WorldInterface world;
   private boolean lookAroundUsedLastTurn;
   private int damage;
   Scanner scanner;
@@ -28,7 +28,7 @@ public abstract class Player {
    * @param currentRoomIndexIn current room.
    */
 
-  public Player(String nameIn, int maxCarryCapacityIn, int currentRoomIndexIn, WorldImpl worldIn) {
+  public Player(String nameIn, int maxCarryCapacityIn, int currentRoomIndexIn, WorldInterface worldIn) {
 
     this.name = nameIn;
     this.maxCarryCapacity = maxCarryCapacityIn;

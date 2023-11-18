@@ -6,7 +6,7 @@ public class ComputerPlayer extends Player {
   
   int currentRoomIndex;
   int maxCarryLimit;
-  WorldImpl world;
+  WorldInterface world;
   
   /**
    * Computer Player Constructor.
@@ -16,7 +16,7 @@ public class ComputerPlayer extends Player {
    * @param currentRoomIndexIn current room.
    * @param worldIn            world.
    */
-  public ComputerPlayer(String nameIn, int maxCarryLimitIn, int currentRoomIndexIn, WorldImpl worldIn) {
+  public ComputerPlayer(String nameIn, int maxCarryLimitIn, int currentRoomIndexIn, WorldInterface worldIn) {
     super(nameIn, maxCarryLimitIn, currentRoomIndexIn, worldIn);
     this.currentRoomIndex = currentRoomIndexIn;
     this.maxCarryLimit = maxCarryLimitIn;

@@ -1,24 +1,20 @@
 package controller;
 
-import model.Pet;
 import model.Player;
-import model.TargetCharacter;
-import model.WorldImpl;
+import model.WorldInterface;
 
-public class GameFacade {
-  private final WorldImpl world;
-  private final Pet pet;
-  private final TargetCharacter targetCharacter;
+public class ControllerFacade {
+  
+  private final WorldInterface world;
+  
 
-  public GameFacade(WorldImpl world) {
+  public ControllerFacade(WorldInterface world) {
     this.world = world;
-    this.pet = world.getPet();
-    this.targetCharacter = world.getTargetCharacter();
   }
   
   
   
-  public WorldImpl getWorld() {
+  public WorldInterface getWorld() {
     return world;
   }
 
@@ -62,13 +58,13 @@ public class GameFacade {
   }
 
   public void PetMove() {
-    CommandInterface petMove = new PetMove(pet);
+    CommandInterface petMove = new PetMove(world.getPet());
     petMove.execute();
   }
 
   public void TargetCharacterMove() {
 
-    CommandInterface targetCharacterMove = new TargetCharacterMove(targetCharacter);
+    CommandInterface targetCharacterMove = new TargetCharacterMove(world.getTargetCharacter());
     targetCharacterMove.execute();
 
   }

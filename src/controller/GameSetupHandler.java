@@ -1,6 +1,6 @@
 package controller;
 
-import java.io.IOException;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.ThreadLocalRandom;
@@ -9,30 +9,36 @@ import model.ComputerPlayer;
 import model.HumanPlayer;
 import model.Item;
 import model.MapImageCreation;
+import model.ModelFacade;
 import model.Pet;
 import model.Player;
 import model.Room;
 import model.TargetCharacter;
 import model.WorldImpl;
+import model.WorldInterface;
 
 public class GameSetupHandler {
-  private final GameFacade gameFacade;
+  private final ControllerFacade gameFacade;
+  private final ModelFacade modelFacade;
   private final Scanner scanner;
+  private WorldInterface world;
 
-  public GameSetupHandler(GameFacade gameFacade, Scanner scanner) {
+  public GameSetupHandler(ControllerFacade gameFacade, ModelFacade modelFacade, Scanner scanner) {
     this.gameFacade = gameFacade;
+    this.modelFacade = modelFacade;
     this.scanner = scanner;
+    this.world = modelFacade.getWorld();
   }
 
   public void showIntro() {
     // Display welcome message and general info about the world
-    System.out.println("Welcome to " + gameFacade.getWorld().getWorldName());
+    System.out.println("Welcome to " + world.getWorldName());
     System.out.println(
-        "Your target character's name is " + gameFacade.getWorld().getTargetCharacter().getName());
+        "Your target character's name is " + world.getTargetCharacter().getName());
     System.out.println("The target character starts with "
-        + gameFacade.getWorld().getTargetCharacter().getHealth() + " health points");
+        + world.getTargetCharacter().getHealth() + " health points");
     System.out.println("The target character has a special pet named as "
-        + gameFacade.getWorld().getPet().getName());
+        + world.getPet().getName());
     System.out.println("");
 
     // Prompt user for rules
@@ -43,10 +49,10 @@ public class GameSetupHandler {
     if (input1.equals("y")) {
       System.out
           .println("There are " + gameFacade.getWorld().getNumRooms() + "room(s) in the game");
-      printRoomInfo(gameFacade.getWorld());
+      printRoomInfo(world);
       System.out
           .println("There are " + gameFacade.getWorld().getNumItems() + "item(s) in the game");
-      printItemInfo(gameFacade.getWorld());
+      printItemInfo(world);
       printGameRules();
     }
 
@@ -57,13 +63,13 @@ public class GameSetupHandler {
 
     if (input2.equals("y")) {
 
-      new MapImageCreation(gameFacade.getWorld());
+      new MapImageCreation(world);
 
     }
 
   }
 
-  private void printRoomInfo(WorldImpl world) {
+  private void printRoomInfo(WorldInterface world) {
     // Get all rooms in the world
     List<Room> allRooms = world.getRooms();
 
@@ -83,7 +89,7 @@ public class GameSetupHandler {
     System.out.println("");
   }
 
-  private void printItemInfo(WorldImpl world) {
+  private void printItemInfo(WorldInterface world) {
     // Get all items in the world
     List<Item> allItems = world.getItems();
 
@@ -159,7 +165,13 @@ public class GameSetupHandler {
     // Prompt for the number of computer players
     System.out.print("Enter the number of computer players: ");
     int numComputerPlayers = scanner.nextInt();
+    try {
     scanner.nextLine(); // Consume the newline character
+    }
+    catch (InputMismatchException e)
+    {
+      System.out.println("Invalid input. Please enter a valid input.");
+    }
 
     // Prompt for the number of human players
     System.out.print("Enter the number of human players: ");
@@ -179,8 +191,8 @@ public class GameSetupHandler {
       int randomCarryingCapacity = (int) (Math.random() * 50); // Random carrying capacity
 
       Player computerPlayer = new ComputerPlayer("Computer Player " + (i + 1),
-          randomCarryingCapacity, randomEntryRoomIndex, gameFacade.getWorld());
-      gameFacade.getWorld().addPlayer(computerPlayer);
+          randomCarryingCapacity, randomEntryRoomIndex, world);
+      world.addPlayer(computerPlayer);
     }
 
     for (int i = 0; i < numHumanPlayers; i++) {
@@ -203,8 +215,8 @@ public class GameSetupHandler {
 
       // Create human player with specified details and add to the world
       Player humanPlayer = new HumanPlayer(playerName, carryingCapacity, entryRoomIndex,
-          gameFacade.getWorld());
-      gameFacade.getWorld().addPlayer(humanPlayer);
+          world);
+      world.addPlayer(humanPlayer);
 
       System.out.println("");
     }
@@ -224,7 +236,7 @@ public class GameSetupHandler {
 
   private void viewPlayerInfo() {
     // Get the list of players from the world
-    List<Player> players = gameFacade.getWorld().getPlayers();
+    List<Player> players = world.getPlayers();
 
     if (!players.isEmpty()) {
       System.out.println("Player Information:");
@@ -254,8 +266,7 @@ public class GameSetupHandler {
     int maxTurns = scanner.nextInt();
 
     // Get the list of players from the world
-    List<Player> players = gameFacade.getWorld().getPlayers();
-    int currentPlayerIndex = 0;
+    List<Player> players = world.getPlayers();
 
     // Game loop
     for (int turn = 1; turn <= maxTurns; turn++) {
@@ -279,7 +290,7 @@ public class GameSetupHandler {
         displayGameState();
 
         // Check winning condition after each turn
-        if (gameFacade.getWorld().getTargetCharacter().getHealth() <= 0) {
+        if (world.getTargetCharacter().getHealth() <= 0) {
           System.out.println("\nPlayer " + player.getName() + " wins!");
           return;
         }
@@ -296,11 +307,23 @@ public class GameSetupHandler {
     System.out.println("1. Look Around");
     System.out.println("2. Pick Up Item");
     System.out.println("3. Move");
+    
+    // Check if human player and pet are in the same room
+    boolean sameRoomPet =  (humanPlayer.getCurrentRoomIndex() == world
+        .getPet().getPetPosition());
+    
+    // Check if human player and target are in the same room
+    boolean sameRoomTarget = (humanPlayer.getCurrentRoomIndex() == world
+        .getTargetCharacter().getCharacterPositionIndex());
 
-    // Check if the human player and target character are in the same room
-    if (humanPlayer.getCurrentRoomIndex() == gameFacade.getWorld().getTargetCharacter()
-        .getCharacterPositionIndex()) {
+    // Check if the human player and target character are in the same room with no pet
+    if (!sameRoomPet && sameRoomTarget) {
       System.out.println("4. Kill Attempt");
+    }
+    
+    // Check if the human player and target character are in the same room with pet
+    if (sameRoomPet && sameRoomTarget) {
+      System.out.println("4. KILL ATTEMPT!?");
     }
 
     // Prompt user for action choice
@@ -318,11 +341,10 @@ public class GameSetupHandler {
         gameFacade.playerMove(humanPlayer);
         break;
       case 4:
-        if (humanPlayer.getCurrentRoomIndex() == gameFacade.getWorld().getTargetCharacter()
-            .getCharacterPositionIndex()) {
+        if (!sameRoomPet && sameRoomTarget) {
           gameFacade.playerKillAttempt(humanPlayer);
         } else {
-          System.out.println("Invalid choice. Skipping turn.");
+          System.out.println("Attack failed! Leo the cat was in the same room.");
         }
         break;
       default:
@@ -343,17 +365,18 @@ public class GameSetupHandler {
     System.out.println("3. Move");
 
     // Check if computer player and target are in the same room
-    boolean sameRoom = (computerPlayer.getCurrentRoomIndex() == gameFacade.getWorld()
+    boolean sameRoomTarget = (computerPlayer.getCurrentRoomIndex() == world
         .getTargetCharacter().getCharacterPositionIndex());
+   
 
-    if (sameRoom) {
+    if (sameRoomTarget) {
       // If in the same room, display "Kill Attempt" option
       System.out.println("4. Kill Attempt");
     }
 
     // Computer player chooses randomly
     int randomChoice;
-    if (sameRoom) {
+    if (sameRoomTarget) {
       // If in the same room, restrict random choice to 4
       randomChoice = 4;
     } else {
@@ -391,7 +414,7 @@ public class GameSetupHandler {
     System.out.println("\nCurrent Game State:");
 
     // Display player positions and inventory
-    List<Player> players = gameFacade.getWorld().getPlayers();
+    List<Player> players = world.getPlayers();
     for (Player player : players) {
       StringBuilder inventoryString = new StringBuilder();
       for (Item item : player.getInventory()) {
@@ -409,12 +432,12 @@ public class GameSetupHandler {
 
 
     // Display target character's position and health
-    TargetCharacter targetCharacter = gameFacade.getWorld().getTargetCharacter();
+    TargetCharacter targetCharacter = world.getTargetCharacter();
     System.out.println("Target Character - Room: " + targetCharacter.getCharacterPositionIndex()
         + ", Health: " + targetCharacter.getHealth());
 
     // Display pet's position
-    Pet pet = gameFacade.getWorld().getPet();
+    Pet pet = world.getPet();
     System.out.println("Pet - Room: " + pet.getPetPosition());
   }
 

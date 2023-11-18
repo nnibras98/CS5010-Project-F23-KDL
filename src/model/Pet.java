@@ -3,6 +3,7 @@ package model;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.Stack;
 
 public class Pet {
   
@@ -11,6 +12,8 @@ public class Pet {
   private Room currentRoom;
   private Set<Room> visitedRooms;
   private final List<Room> allRooms;
+  private Stack<Room> stack;
+
   
   public Pet(String nameIn, Room currentRoomIn, List<Room> allRoomsIn) {
     
@@ -18,6 +21,7 @@ public class Pet {
     this.currentRoom = currentRoomIn;
     this.allRooms = allRoomsIn;
     this.visitedRooms = new HashSet<>();
+    this.stack = new Stack<>();
     this.petPosition = 0;
     
   }
@@ -54,41 +58,52 @@ public class Pet {
     return allRooms;
   }
   
-  //DFS implementation of move.
+  //DFS move
   public void move() {
-    // Get a list of all neighboring rooms
-    List<Room> neighboringRooms = currentRoom.getNeighbors(allRooms);
-
-    // Check if all neighboring rooms have been visited
-    boolean allVisited = true;
-    for (Room neighbor : neighboringRooms) {
-        if (!visitedRooms.contains(neighbor)) {
-            allVisited = false;
-            break;
-        }
+    // If all rooms have been visited, start over from the first room
+    if (visitedRooms.size() == allRooms.size()) {
+        visitedRooms.clear();
+        stack.clear();
+        currentRoom = allRooms.get(0);  
+        petPosition = currentRoom.getIndex();
     }
 
-    // If all neighboring rooms have been visited, reset the visited status
-    if (allVisited) {
+    // If the stack is empty or all neighboring rooms have been visited, reset the visited status
+    if (stack.isEmpty() || allNeighborsVisited(currentRoom)) {
         visitedRooms.clear();
+        stack.push(currentRoom);
     }
 
     visitedRooms.add(currentRoom);
 
-    // Find the first unvisited neighboring room
-    Room nextRoom = null;
-    for (Room neighbor : neighboringRooms) {
-        if (!visitedRooms.contains(neighbor)) {
-            nextRoom = neighbor;
-            break;
-        }
-    }
-
-    // If an unvisited neighboring room is found, move to it
+    // Find the first unvisited neighboring room and move to it
+    Room nextRoom = getFirstUnvisitedNeighbor(currentRoom);
     if (nextRoom != null) {
+        stack.push(nextRoom);
         currentRoom = nextRoom;
         petPosition = currentRoom.getIndex();
     }
+}
+
+
+private boolean allNeighborsVisited(Room room) {
+    List<Room> neighboringRooms = room.getNeighbors(allRooms);
+    for (Room neighbor : neighboringRooms) {
+        if (!visitedRooms.contains(neighbor)) {
+            return false;
+        }
+    }
+    return true;
+}
+
+private Room getFirstUnvisitedNeighbor(Room room) {
+    List<Room> neighboringRooms = room.getNeighbors(allRooms);
+    for (Room neighbor : neighboringRooms) {
+        if (!visitedRooms.contains(neighbor)) {
+            return neighbor;
+        }
+    }
+    return null;
 }
 
 

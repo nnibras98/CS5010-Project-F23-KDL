@@ -7,7 +7,7 @@ public class HumanPlayer extends Player {
 
   int currentRoomIndex;
   int maxCarryLimit;
-  WorldImpl world;
+  WorldInterface world;
   Scanner scanner;
   
 
@@ -20,7 +20,7 @@ public class HumanPlayer extends Player {
    * @param worldIn            world.
    */
   public HumanPlayer(String nameIn, int maxCarryLimitIn, int currentRoomIndexIn,
-      WorldImpl worldIn) {
+      WorldInterface worldIn) {
     super(nameIn, maxCarryLimitIn, currentRoomIndexIn, worldIn);
     this.currentRoomIndex = currentRoomIndexIn;
     this.maxCarryLimit = maxCarryLimitIn;

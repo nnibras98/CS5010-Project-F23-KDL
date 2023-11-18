@@ -1,14 +1,10 @@
 package model;
 
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
-import java.util.List;
 import javax.imageio.ImageIO;
 
 /**
@@ -22,7 +18,7 @@ public class MapImageCreation {
    * @param world World instance containing information about rooms, players, items, etc.
    * @param filename Output filename for the generated image.
    */
-  public MapImageCreation(WorldImpl world) {
+  public MapImageCreation(WorldInterface world) {
     try {
       // Create a BufferedImage for the world with white background
       int width = world.getNumCols() * 30;
@@ -50,7 +46,7 @@ public class MapImageCreation {
    * @param world World instance containing information about rooms.
    * @param g2d   Graphics2D object for drawing.
    */
-  private void drawRooms(WorldImpl world, Graphics2D g2d) {
+  private void drawRooms(WorldInterface world, Graphics2D g2d) {
     for (Room room : world.getRooms()) {
       int upperLeftRow = room.getUpperLeftRow();
       int upperLeftColumn = room.getUpperLeftColumn();
@@ -81,7 +77,7 @@ public class MapImageCreation {
     // Open the image using the default associated application
     try {
       String[] commands = { "cmd.exe", "/c", "start", "\"DummyTitle\"", "\"" + filename + "\"" };
-      Process p = Runtime.getRuntime().exec(commands);
+      Runtime.getRuntime().exec(commands);
       System.out.println("Map opened in default photo viewer");
       System.out.println("");
     } catch (IOException e) {
