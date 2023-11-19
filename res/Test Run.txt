@@ -1,0 +1,482 @@
+Please provide the path to the World file
+
+Welcome to Doctor Lucky's Mansion
+Your target character's name is Doctor Lucky
+The target character starts with 50 health points
+The target character has a special pet named as Leo the Cat
+
+Do you want to see the game info and rules? (y/n): y
+
+There are 21room(s) in the game
+
+All Rooms in the World:
+Index: 0 Name: Armory
+Index: 1 Name: Billiard Room
+Index: 2 Name: Carriage House
+Index: 3 Name: Dining Hall
+Index: 4 Name: Drawing Room
+Index: 5 Name: Foyer
+Index: 6 Name: Green House
+Index: 7 Name: Hedge Maze
+Index: 8 Name: Kitchen
+Index: 9 Name: Lancaster Room
+Index: 10 Name: Library
+Index: 11 Name: Lilac Room
+Index: 12 Name: Master Suite
+Index: 13 Name: Nursery
+Index: 14 Name: Parlor
+Index: 15 Name: Piazza
+Index: 16 Name: Servants' Quarters
+Index: 17 Name: Tennessee Room
+Index: 18 Name: Trophy Room
+Index: 19 Name: Wine Cellar
+Index: 20 Name: Winter Garden
+
+There are 20item(s) in the game
+
+All Items in the World:
+Item: Crepe Pan found in Kitchen
+Item: Letter Opener found in Drawing Room
+Item: Shoe Horn found in Master Suite
+Item: Sharp Knife found in Kitchen
+Item: Revolver found in Armory
+Item: Civil War Cannon found in Piazza
+Item: Chain Saw found in Carriage House
+Item: Broom Stick found in Servants' Quarters
+Item: Billiard Cue found in Billiard Room
+Item: Rat Poison found in Wine Cellar
+Item: Trowel found in Green House
+Item: Big Red Hammer found in Carriage House
+Item: Pinking Shears found in Green House
+Item: Duck Decoy found in Trophy Room
+Item: Bad Cream found in Nursery
+Item: Monkey Hand found in Trophy Room
+Item: Tight Hat found in Lilac Room
+Item: Piece of Rope found in Wine Cellar
+Item: Silken Cord found in Lancaster Room
+Item: Loud Noise found in Hedge Maze
+
+
+Game Rules:
+1. A Human-controlled player can move from the space they are currently in to a neighboring space. This represents a turn.
+2. A Human-controlled player can pick up an item in the world found in the same space, removing it from the world. Limited by carry capacity. This represents a turn.
+3. A Human-controlled player can look around, to see information about visible spaces. This represents a turn.
+4. A Human-controlled player can make an attemp to kill the target character. This represents a turn.
+5. A Computer-controlled player randomly chooses an action but always chooses to make an attempt to kill(if possible as per the game rule mentioned in point 8). This represents a turn.
+6. Computer-controlled players attempt using the item in their inventory that does the most damage if unseen.
+7. A player with no items can poke the target character's eye for 1 point of damage.
+8. A player can only make an attemp on target character if they are in the same room, the pet is not present in that room, and if the last turn is not a look around. 
+9. The target character moves around the world during every turn of the game and so does the pet.
+10. If an attack is seen by another player, it is stopped, and no damage is done.
+11. Unseen attacks are always successful, reducing health points of target character based on the item used and removing that item from the world.
+12. The game ends when:
+    a. A player successfully kills the target character, winning the game.
+    b. The maximum number of turns is reached, and the target character escapes, hence nobody wins.
+
+
+Do you want to see the map? (y/n): y
+
+Map opened in default photo viewer
+
+Let's set up the game by adding players!
+Enter the number of computer players: 1
+Enter the number of human players: 1
+
+Enter details for Human Player 1
+Enter player name: Nafi
+Enter entry room index: 5
+Enter carrying capacity: 12
+Carrying capacity cannot exceed 10, setting the capacity to 10...Capacity set to 10
+Do you want to see the player info? (y/n): y
+
+Player Information:
+Player Name: Computer Player 1
+Entry Room: 16
+Carrying Capacity: 9
+Player Type: Computer Player
+
+Player Name: Nafi
+Entry Room: 5
+Carrying Capacity: 10
+Player Type: Human Player
+
+Enter the maximum number of turns: 10
+
+--- Turn 1 ---
+
+Player: Computer Player 1
+Options for Computer Player:
+1. Look Around
+2. Pick Up Item
+3. Move
+Computer Player chooses: 2
+Items available to pick up:
+1. Broom Stick
+Choosing an item to pick up:
+Picked up Broom Stick
+Added Broom Stick to your inventory.
+Your Inventory:
+- Broom Stick
+End of Inventory
+
+Current Game State:
+Computer Player 1 - Room: 16, Inventory: Broom Stick
+Nafi - Room: 5, Inventory: 
+Target Character - Room: 1, Health: 50
+Pet - Room: 1
+
+Player: Nafi
+Options for Human Player:
+1. Look Around
+2. Pick Up Item
+3. Move
+Enter your choice (1-4): 1
+Neighboring room(s) of Foyer-
+Drawing Room
+Piazza
+
+Current Game State:
+Computer Player 1 - Room: 16, Inventory: Broom Stick
+Nafi - Room: 5, Inventory: 
+Target Character - Room: 2, Health: 50
+Pet - Room: 3
+
+--- Turn 2 ---
+
+Player: Computer Player 1
+Options for Computer Player:
+1. Look Around
+2. Pick Up Item
+3. Move
+Computer Player chooses: 2
+No items available to pick up in the room.
+
+Current Game State:
+Computer Player 1 - Room: 16, Inventory: Broom Stick
+Nafi - Room: 5, Inventory: 
+Target Character - Room: 3, Health: 50
+Pet - Room: 4
+
+Player: Nafi
+Options for Human Player:
+1. Look Around
+2. Pick Up Item
+3. Move
+Enter your choice (1-4): 2
+No items available to pick up in the room.
+
+Current Game State:
+Computer Player 1 - Room: 16, Inventory: Broom Stick
+Nafi - Room: 5, Inventory: 
+Target Character - Room: 4, Health: 50
+Pet - Room: 5
+
+--- Turn 3 ---
+
+Player: Computer Player 1
+Options for Computer Player:
+1. Look Around
+2. Pick Up Item
+3. Move
+Computer Player chooses: 1
+Neighboring room(s) of Servants' Quarters-
+Lancaster Room
+Lilac Room
+Parlor
+
+Current Game State:
+Computer Player 1 - Room: 16, Inventory: Broom Stick
+Nafi - Room: 5, Inventory: 
+Target Character - Room: 5, Health: 50
+Pet - Room: 15
+
+Player: Nafi
+Options for Human Player:
+1. Look Around
+2. Pick Up Item
+3. Move
+4. Kill Attempt
+Enter your choice (1-4): 4
+Attempt could not be made. No damage done.
+
+Current Game State:
+Computer Player 1 - Room: 16, Inventory: Broom Stick
+Nafi - Room: 5, Inventory: 
+Target Character - Room: 6, Health: 50
+Pet - Room: 7
+
+--- Turn 4 ---
+
+Player: Computer Player 1
+Options for Computer Player:
+1. Look Around
+2. Pick Up Item
+3. Move
+Computer Player chooses: 3
+Choosing a room to move to:
+1. Lancaster Room
+2. Lilac Room
+3. Parlor
+Moved to Parlor
+
+Current Game State:
+Computer Player 1 - Room: 14, Inventory: Broom Stick
+Nafi - Room: 5, Inventory: 
+Target Character - Room: 7, Health: 50
+Pet - Room: 6
+
+Player: Nafi
+Options for Human Player:
+1. Look Around
+2. Pick Up Item
+3. Move
+Enter your choice (1-4): 3
+Choose a room to move to:
+1. Drawing Room
+2. Piazza
+2
+Moved to Piazza
+
+Current Game State:
+Computer Player 1 - Room: 14, Inventory: Broom Stick
+Nafi - Room: 15, Inventory: 
+Target Character - Room: 8, Health: 50
+Pet - Room: 7
+
+--- Turn 5 ---
+
+Player: Computer Player 1
+Options for Computer Player:
+1. Look Around
+2. Pick Up Item
+3. Move
+Computer Player chooses: 3
+Choosing a room to move to:
+1. Dining Hall
+2. Kitchen
+3. Servants' Quarters
+4. Tennessee Room
+Moved to Dining Hall
+
+Current Game State:
+Computer Player 1 - Room: 3, Inventory: Broom Stick
+Nafi - Room: 15, Inventory: 
+Target Character - Room: 9, Health: 50
+Pet - Room: 15
+
+Player: Nafi
+Options for Human Player:
+1. Look Around
+2. Pick Up Item
+3. Move
+Enter your choice (1-4): 2
+Items available to pick up:
+1. Civil War Cannon
+Choose an item to pick up:
+1
+Picked up Civil War Cannon
+Added Civil War Cannon to your inventory.
+Your Inventory:
+- Civil War Cannon
+End of Inventory
+
+Current Game State:
+Computer Player 1 - Room: 3, Inventory: Broom Stick
+Nafi - Room: 15, Inventory: Civil War Cannon
+Target Character - Room: 10, Health: 50
+Pet - Room: 5
+
+--- Turn 6 ---
+
+Player: Computer Player 1
+Options for Computer Player:
+1. Look Around
+2. Pick Up Item
+3. Move
+Computer Player chooses: 1
+Neighboring room(s) of Dining Hall-
+Armory
+Billiard Room
+Drawing Room
+Kitchen
+Parlor
+Tennessee Room
+Trophy Room
+Wine Cellar
+
+Current Game State:
+Computer Player 1 - Room: 3, Inventory: Broom Stick
+Nafi - Room: 15, Inventory: Civil War Cannon
+Target Character - Room: 11, Health: 50
+Pet - Room: 4
+
+Player: Nafi
+Options for Human Player:
+1. Look Around
+2. Pick Up Item
+3. Move
+Enter your choice (1-4): 3
+Choose a room to move to:
+1. Foyer
+2. Hedge Maze
+3. Winter Garden
+1
+Moved to Foyer
+
+Current Game State:
+Computer Player 1 - Room: 3, Inventory: Broom Stick
+Nafi - Room: 5, Inventory: Civil War Cannon
+Target Character - Room: 12, Health: 50
+Pet - Room: 0
+
+--- Turn 7 ---
+
+Player: Computer Player 1
+Options for Computer Player:
+1. Look Around
+2. Pick Up Item
+3. Move
+Computer Player chooses: 2
+No items available to pick up in the room.
+
+Current Game State:
+Computer Player 1 - Room: 3, Inventory: Broom Stick
+Nafi - Room: 5, Inventory: Civil War Cannon
+Target Character - Room: 13, Health: 50
+Pet - Room: 1
+
+Player: Nafi
+Options for Human Player:
+1. Look Around
+2. Pick Up Item
+3. Move
+Enter your choice (1-4): 3
+Choose a room to move to:
+1. Drawing Room
+2. Piazza
+2
+Moved to Piazza
+
+Current Game State:
+Computer Player 1 - Room: 3, Inventory: Broom Stick
+Nafi - Room: 15, Inventory: Civil War Cannon
+Target Character - Room: 14, Health: 50
+Pet - Room: 3
+
+--- Turn 8 ---
+
+Player: Computer Player 1
+Options for Computer Player:
+1. Look Around
+2. Pick Up Item
+3. Move
+Computer Player chooses: 2
+No items available to pick up in the room.
+
+Current Game State:
+Computer Player 1 - Room: 3, Inventory: Broom Stick
+Nafi - Room: 15, Inventory: Civil War Cannon
+Target Character - Room: 15, Health: 50
+Pet - Room: 8
+
+Player: Nafi
+Options for Human Player:
+1. Look Around
+2. Pick Up Item
+3. Move
+4. Kill Attempt
+Enter your choice (1-4): 4
+Choose an item to use in the attempt:
+1. Civil War Cannon , Hit point(s) for this item: 3
+1
+Used Civil War Cannon in the attempt.
+Attempt successful! Doctor Lucky loses 3 health point(s), the current health is: 47
+
+Current Game State:
+Computer Player 1 - Room: 3, Inventory: Broom Stick
+Nafi - Room: 15, Inventory: Civil War Cannon
+Target Character - Room: 16, Health: 47
+Pet - Room: 14
+
+--- Turn 9 ---
+
+Player: Computer Player 1
+Options for Computer Player:
+1. Look Around
+2. Pick Up Item
+3. Move
+Computer Player chooses: 3
+Choosing a room to move to:
+1. Armory
+2. Billiard Room
+3. Drawing Room
+4. Kitchen
+5. Parlor
+6. Tennessee Room
+7. Trophy Room
+8. Wine Cellar
+Moved to Parlor
+
+Current Game State:
+Computer Player 1 - Room: 14, Inventory: Broom Stick
+Nafi - Room: 15, Inventory: Civil War Cannon
+Target Character - Room: 17, Health: 47
+Pet - Room: 16
+
+Player: Nafi
+Options for Human Player:
+1. Look Around
+2. Pick Up Item
+3. Move
+Enter your choice (1-4): 3
+Choose a room to move to:
+1. Foyer
+2. Hedge Maze
+3. Winter Garden
+3
+Moved to Winter Garden
+
+Current Game State:
+Computer Player 1 - Room: 14, Inventory: Broom Stick
+Nafi - Room: 20, Inventory: Civil War Cannon
+Target Character - Room: 18, Health: 47
+Pet - Room: 9
+
+--- Turn 10 ---
+
+Player: Computer Player 1
+Options for Computer Player:
+1. Look Around
+2. Pick Up Item
+3. Move
+Computer Player chooses: 3
+Choosing a room to move to:
+1. Dining Hall
+2. Kitchen
+3. Servants' Quarters
+4. Tennessee Room
+Moved to Servants' Quarters
+
+Current Game State:
+Computer Player 1 - Room: 16, Inventory: Broom Stick
+Nafi - Room: 20, Inventory: Civil War Cannon
+Target Character - Room: 19, Health: 47
+Pet - Room: 11
+
+Player: Nafi
+Options for Human Player:
+1. Look Around
+2. Pick Up Item
+3. Move
+Enter your choice (1-4): 1
+Neighboring room(s) of Winter Garden-
+Carriage House
+Piazza
+
+Current Game State:
+Computer Player 1 - Room: 16, Inventory: Broom Stick
+Nafi - Room: 20, Inventory: Civil War Cannon
+Target Character - Room: 20, Health: 47
+Pet - Room: 12
+
+The target character escapes! No one wins.

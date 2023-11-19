@@ -15,8 +15,8 @@ public class MapImageCreation {
   /**
    * Takes in the world and forms the image.
    *
-   * @param world World instance containing information about rooms, players, items, etc.
-   * @param filename Output filename for the generated image.
+   * @param world    World instance containing information about rooms, players,
+   *                 items, etc.
    */
   public MapImageCreation(WorldInterface world) {
     try {
@@ -32,8 +32,10 @@ public class MapImageCreation {
       drawRooms(world, g2d);
 
       // Save the world image
-      ImageIO.write(worldImage, "png", new File("C:\\CS5010 WorkSpace\\Game-Development-CS5010-Project\\res\\mansion.png"));
-      openImageInPhotos("C:\\\\CS5010 WorkSpace\\\\Game-Development-CS5010-Project\\\\res\\\\mansion.png");
+      ImageIO.write(worldImage, "png",
+          new File("C:\\CS5010 WorkSpace\\Game-Development-CS5010-Project\\res\\mansion.png"));
+      openImageInPhotos(
+          "C:\\\\CS5010 WorkSpace\\\\Game-Development-CS5010-Project\\\\res\\\\mansion.png");
     } catch (IOException e) {
       System.err.println("An error occurred while saving the image.");
       e.printStackTrace();
@@ -66,7 +68,6 @@ public class MapImageCreation {
       g2d.drawString(room.getName(), (upperLeftColumn * 30) + 5, (upperLeftRow * 30) + 15);
     }
   }
-
 
   /**
    * Opens the image in the default image viewer.

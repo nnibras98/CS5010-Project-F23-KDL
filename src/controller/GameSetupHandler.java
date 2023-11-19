@@ -4,7 +4,6 @@ import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.ThreadLocalRandom;
-
 import model.ComputerPlayer;
 import model.HumanPlayer;
 import model.Item;
@@ -14,31 +13,43 @@ import model.Pet;
 import model.Player;
 import model.Room;
 import model.TargetCharacter;
-import model.WorldImpl;
 import model.WorldInterface;
 
+/**
+ * set up for controller.
+ */
 public class GameSetupHandler {
   private final ControllerFacade gameFacade;
   private final ModelFacade modelFacade;
   private final Scanner scanner;
   private WorldInterface world;
 
-  public GameSetupHandler(ControllerFacade gameFacade, ModelFacade modelFacade, Scanner scanner) {
-    this.gameFacade = gameFacade;
-    this.modelFacade = modelFacade;
-    this.scanner = scanner;
+  /**
+   * constructor for setup.
+   * 
+   * @param gameFacadeIn  gfi.
+   * @param modelFacadeIn mfi.
+   * @param scannerIn     si.
+   */
+  public GameSetupHandler(ControllerFacade gameFacadeIn, ModelFacade modelFacadeIn,
+      Scanner scannerIn) {
+    this.gameFacade = gameFacadeIn;
+    this.modelFacade = modelFacadeIn;
+    this.scanner = scannerIn;
     this.world = modelFacade.getWorld();
   }
 
+  /**
+   * intro.
+   */
   public void showIntro() {
     // Display welcome message and general info about the world
     System.out.println("Welcome to " + modelFacade.getWorldName());
-    System.out.println(
-        "Your target character's name is " + modelFacade.getTargetCharacterName());
-    System.out.println("The target character starts with "
-        + modelFacade.getTargetCharacterHealth() + " health points");
-    System.out.println("The target character has a special pet named as "
-        + modelFacade.getPetName());
+    System.out.println("Your target character's name is " + modelFacade.getTargetCharacterName());
+    System.out.println("The target character starts with " + modelFacade.getTargetCharacterHealth()
+        + " health points");
+    System.out
+        .println("The target character has a special pet named as " + modelFacade.getPetName());
     System.out.println("");
 
     // Prompt user for rules
@@ -46,7 +57,7 @@ public class GameSetupHandler {
     String input1 = scanner.nextLine().toLowerCase();
     System.out.println("");
 
-    if (input1.equals("y")) {
+    if ("y".equals(input1)) {
       System.out
           .println("There are " + gameFacade.getWorld().getNumRooms() + "room(s) in the game");
       printRoomInfo();
@@ -61,7 +72,7 @@ public class GameSetupHandler {
     String input2 = scanner.nextLine().toLowerCase();
     System.out.println("");
 
-    if (input2.equals("y")) {
+    if ("y".equals(input2)) {
 
       new MapImageCreation(world);
 
@@ -119,63 +130,71 @@ public class GameSetupHandler {
     System.out.println("Game Rules:");
 
     // Rules for player actions
+    System.out.println("1. A Human-controlled player can move from the "
+        + "space they are currently in to a neighboring space." + " This represents a turn.");
     System.out.println(
-        "1. A Human-controlled player can move from the space they are currently in to a neighboring space. This represents a turn.");
+        "2. A Human-controlled player can pick up an item in the world found in the same space,"
+            + " removing it from the world. Limited by carry capacity. This represents a turn.");
     System.out.println(
-        "2. A Human-controlled player can pick up an item in the world found in the same space, removing it from the world. Limited by carry capacity. This represents a turn.");
-    System.out.println(
-        "3. A Human-controlled player can look around, to see information about visible spaces. This represents a turn.");
-    System.out.println(
-        "4. A Human-controlled player can make an attemp to kill the target character. This represents a turn.");
-    System.out.println(
-        "5. A Computer-controlled player randomly chooses an action but always chooses to make an attempt to kill(if possible as per the game rule mentioned in point 8). This represents a turn.");
+        "3. A Human-controlled player can look around, to see information about visible spaces."
+            + " This represents a turn.");
+    System.out
+        .println("4. A Human-controlled player can make an attemp to kill the target character."
+            + " This represents a turn.");
+    System.out
+        .println("5. A Computer-controlled player randomly chooses an action but always chooses "
+            + "to make an attempt to kill(if possible as per the"
+            + " game rule mentioned in point 8). This represents a turn.");
 
     // Rules for making attempts on the target character's life
-    System.out.println(
-        "6. Computer-controlled players attempt using the item in their inventory that does the most damage if unseen.");
+    System.out.println("6. Computer-controlled players attempt using the item"
+        + " in their inventory that does the most damage if unseen.");
     System.out.println(
         "7. A player with no items can poke the target character's eye for 1 point of damage.");
-    System.out.println(
-        "8. A player can only make an attemp on target character if they are in the same room, the pet is not present in that room, and if the last turn is not a look around. ");
+    System.out.println("8. A player can only make an attemp on target character if "
+        + "they are in the same room, the pet is not present"
+        + " in that room, and if the last turn is not a look around. ");
 
     // Rules for target character and pet
-    System.out.println(
-        "9. The target character moves around the world during every turn of the game and so does the pet.");
+    System.out.println("9. The target character moves around the world "
+        + "during every turn of the game and so does the pet.");
 
     // Results of attempts
     System.out.println(
         "10. If an attack is seen by another player, it is stopped, and no damage is done.");
-    System.out.println(
-        "11. Unseen attacks are always successful, reducing health points of target character based on the item used and removing that item from the world.");
+    System.out.println("11. Unseen attacks are always successful, "
+        + "reducing health points of target character based"
+        + " on the item used and removing that item from the world.");
 
     // End of game conditions
     System.out.println("12. The game ends when:");
     System.out
         .println("    a. A player successfully kills the target character, winning the game.");
-    System.out.println(
-        "    b. The maximum number of turns is reached, and the target character escapes, hence nobody wins.");
+    System.out.println("    b. The maximum number of turns is reached,"
+        + " and the target character escapes, hence nobody wins.");
     System.out.println("");
     System.out.println("");
   }
 
+  /**
+   * player creation flow handler.
+   */
   public void playerCreation() {
     // Prompt user for game setup details
     System.out.println("Let's set up the game by adding players!");
 
     // Prompt for the number of computer players
     System.out.print("Enter the number of computer players: ");
-    int numComputerPlayers = scanner.nextInt();
+    final int numComputerPlayers = scanner.nextInt();
     try {
-    scanner.nextLine(); // Consume the newline character
-    }
-    catch (InputMismatchException e)
-    {
+      scanner.nextLine(); // Consume the newline character
+    } catch (InputMismatchException e) {
       System.out.println("Invalid input. Please enter a valid input.");
     }
 
     // Prompt for the number of human players
     System.out.print("Enter the number of human players: ");
-    int numHumanPlayers = scanner.nextInt();
+    final int numHumanPlayers = scanner.nextInt();
     scanner.nextLine(); // Consume the newline character
 
     System.out.println("");
@@ -184,10 +203,7 @@ public class GameSetupHandler {
     // Adjust this based on your player creation logic
     for (int i = 0; i < numComputerPlayers; i++) {
       // Create computer player and add to the world
-      int randomEntryRoomIndex = (int) (Math.random() * gameFacade.getWorld().getNumRooms()); // Random
-                                                                                              // entry
-                                                                                              // room
-                                                                                              // index
+      int randomEntryRoomIndex = (int) (Math.random() * gameFacade.getWorld().getNumRooms());
       int randomCarryingCapacity = (int) (Math.random() * 10); // Random carrying capacity
 
       Player computerPlayer = new ComputerPlayer("Computer Player " + (i + 1),
@@ -201,26 +217,24 @@ public class GameSetupHandler {
 
       // Prompt for player name
       System.out.print("Enter player name: ");
-      String playerName = scanner.nextLine();
+      final String playerName = scanner.nextLine();
 
       // Prompt for entry room
       System.out.print("Enter entry room index: ");
-      int entryRoomIndex = scanner.nextInt();
+      final int entryRoomIndex = scanner.nextInt();
       scanner.nextLine(); // Consume the newline character
-
       // Prompt for carrying capacity
       System.out.print("Enter carrying capacity: ");
       int carryingCapacity = scanner.nextInt();
       if (carryingCapacity > 10) {
-        System.out.print("Carrying capacity cannot exceed 10, setting the capacity to 10...");
+        System.out.println("Carrying capacity cannot exceed 10, setting the capacity to 10...");
         carryingCapacity = 10;
-        System.out.print("Capacity set to 10");
+        System.out.println("Carrying Capacity set to 10");
       }
       scanner.nextLine(); // Consume the newline character
 
       // Create human player with specified details and add to the world
-      Player humanPlayer = new HumanPlayer(playerName, carryingCapacity, entryRoomIndex,
-          world);
+      Player humanPlayer = new HumanPlayer(playerName, carryingCapacity, entryRoomIndex, world);
       world.addPlayer(humanPlayer);
 
       System.out.println("");
@@ -231,7 +245,7 @@ public class GameSetupHandler {
     String input = scanner.nextLine().toLowerCase();
     System.out.println("");
 
-    if (input.equals("y")) {
+    if ("y".equals(input)) {
 
       viewPlayerInfo();
 
@@ -265,6 +279,9 @@ public class GameSetupHandler {
     }
   }
 
+  /**
+   * turn taking mechanism handler.
+   */
   public void takeTurn() {
     // Prompt user for the maximum number of turns
     System.out.print("Enter the maximum number of turns: ");
@@ -284,10 +301,7 @@ public class GameSetupHandler {
         // Human player actions
         if (player instanceof HumanPlayer) {
           takeHumanPlayerTurn((HumanPlayer) player);
-        }
-
-        // Computer player actions
-        else if (player instanceof ComputerPlayer) {
+        } else if (player instanceof ComputerPlayer) {
           takeComputerPlayerTurn((ComputerPlayer) player);
         }
 
@@ -312,25 +326,27 @@ public class GameSetupHandler {
     System.out.println("1. Look Around");
     System.out.println("2. Pick Up Item");
     System.out.println("3. Move");
-    
-    // Check if human player and pet are in the same room
-    boolean sameRoomPet =  (humanPlayer.getCurrentRoomIndex() == modelFacade.getPetPosition());
-    
-    // Check if human player and target are in the same room
-    boolean sameRoomTarget = (humanPlayer.getCurrentRoomIndex() == modelFacade.getTargetCharacterPosition());
 
-    // Check if the human player and target character are in the same room with no pet
+    // Check if human player and pet are in the same room
+    boolean sameRoomPet = (humanPlayer.getCurrentRoomIndex() == modelFacade.getPetPosition());
+
+    // Check if human player and target are in the same room
+    boolean sameRoomTarget = (humanPlayer.getCurrentRoomIndex() == modelFacade
+        .getTargetCharacterPosition());
+
+    // Check if the human player and target character are in the same room with no
+    // pet
     if (!sameRoomPet && sameRoomTarget) {
       System.out.println("4. Kill Attempt");
     }
-    
+
     // Check if the human player and target character are in the same room with pet
     if (sameRoomPet && sameRoomTarget) {
       System.out.println("4. KILL ATTEMPT!?");
     }
 
     // Prompt user for action choice
-    System.out.print("Enter your choice (1-4): ");
+    System.out.print("Enter your choice: ");
     int choice = scanner.nextInt();
 
     switch (choice) {
@@ -356,8 +372,8 @@ public class GameSetupHandler {
     }
 
     // make dr lucky and his pet move after each turn
-    gameFacade.TargetCharacterMove();
-    gameFacade.PetMove();
+    gameFacade.targetCharacterMove();
+    gameFacade.petMove();
   }
 
   private void takeComputerPlayerTurn(ComputerPlayer computerPlayer) {
@@ -368,8 +384,8 @@ public class GameSetupHandler {
     System.out.println("3. Move");
 
     // Check if computer player and target are in the same room
-    boolean sameRoomTarget = (computerPlayer.getCurrentRoomIndex() == modelFacade.getTargetCharacterPosition());
-   
+    boolean sameRoomTarget = (computerPlayer.getCurrentRoomIndex() == modelFacade
+        .getTargetCharacterPosition());
 
     if (sameRoomTarget) {
       // If in the same room, display "Kill Attempt" option
@@ -408,8 +424,8 @@ public class GameSetupHandler {
     }
 
     // make dr lucky and his pet move after each turn
-    gameFacade.TargetCharacterMove();
-    gameFacade.PetMove();
+    gameFacade.targetCharacterMove();
+    gameFacade.petMove();
   }
 
   private void displayGameState() {
@@ -420,18 +436,17 @@ public class GameSetupHandler {
     for (Player player : players) {
       StringBuilder inventoryString = new StringBuilder();
       for (Item item : player.getInventory()) {
-          inventoryString.append(item.getName()).append(", ");
+        inventoryString.append(item.getName()).append(", ");
       }
 
       // Remove the trailing comma and space
       if (inventoryString.length() > 0) {
-          inventoryString.setLength(inventoryString.length() - 2);
+        inventoryString.setLength(inventoryString.length() - 2);
       }
 
       System.out.println(player.getName() + " - Room: " + player.getCurrentRoomIndex()
-              + ", Inventory: " + inventoryString.toString());
-  }
-
+          + ", Inventory: " + inventoryString.toString());
+    }
 
     // Display target character's position and health
     TargetCharacter targetCharacter = modelFacade.getTargetCharacter();

@@ -3,7 +3,6 @@ package model;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Random;
 import java.util.Scanner;
 
 /**
@@ -18,7 +17,7 @@ public abstract class Player {
   private final WorldInterface world;
   private boolean lookAroundUsedLastTurn;
   private int damage;
-  Scanner scanner;
+  private Scanner scanner;
 
   /**
    * Player Constructor.
@@ -26,9 +25,11 @@ public abstract class Player {
    * @param nameIn             name.
    * @param maxCarryCapacityIn max capacity.
    * @param currentRoomIndexIn current room.
+   * @param worldIn            the world.
    */
 
-  public Player(String nameIn, int maxCarryCapacityIn, int currentRoomIndexIn, WorldInterface worldIn) {
+  public Player(String nameIn, int maxCarryCapacityIn, int currentRoomIndexIn,
+      WorldInterface worldIn) {
 
     this.name = nameIn;
     this.maxCarryCapacity = maxCarryCapacityIn;
@@ -102,7 +103,9 @@ public abstract class Player {
     System.out.println("End of Inventory");
   }
 
-  //
+  /**
+   * logic for look around.
+   */
   public void lookAround() {
 
     // Get the current room of the player
@@ -127,7 +130,9 @@ public abstract class Player {
 
   }
 
-  //
+  /**
+   * logic for kill attempt.
+   */
   public void killAttempt() {
 
     // Unseen attacks are successful also cat should not not be present in the room.

@@ -12,10 +12,6 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import org.junit.Before;
-import org.junit.Test;
-
 import model.HumanPlayer;
 import model.Item;
 import model.Pet;
@@ -23,15 +19,29 @@ import model.Player;
 import model.Room;
 import model.TargetCharacter;
 import model.WorldImpl;
+import org.junit.Before;
+import org.junit.Test;
 
+
+
+/**
+ * test for model.
+ */
 public class ModelTest {
 
   private WorldImpl world;
-
+  private TargetCharacter targetCharacter;
+  private Room room;
+  private Pet testPet;
+  private List<Room> testRooms;
+  
+  /**
+   * set up.
+   */
   @Before
   public void setUp() {
-    // Use a sample text file for testing
-    File file = new File("C:\\\\CS5010 WorkSpace\\\\Game-Development-CS5010-Project\\\\res\\\\mansion.txt");
+    File file = new File(
+        "C:\\\\CS5010 WorkSpace\\\\Game-Development-CS5010-Project\\\\res\\\\mansion.txt");
     world = new WorldImpl(file);
   }
 
@@ -122,9 +132,6 @@ public class ModelTest {
     assertFalse(world.getItems().contains(itemToRemove));
   }
 
-  
-  private TargetCharacter targetCharacter;
-
   @Before
   public void setUp2() {
     targetCharacter = new TargetCharacter(100, "TestTarget", 3);
@@ -144,12 +151,6 @@ public class ModelTest {
   @Test
   public void testGetName() {
     assertEquals("TestTarget", targetCharacter.getName());
-  }
-
-  @Test
-  public void testSetName() {
-    targetCharacter.setName("NewTargetName");
-    assertEquals("NewTargetName", targetCharacter.getName());
   }
 
   @Test
@@ -180,8 +181,6 @@ public class ModelTest {
     targetCharacter.takeDamage(20);
     assertEquals(80, targetCharacter.getHealth());
   }
-  
-  private Room room;
 
   @Before
   public void setUp3() {
@@ -248,78 +247,75 @@ public class ModelTest {
     assertFalse(room.areNeighbors(notNeighbor));
   }
   
-  
-  private Pet testPet;
-  private List<Room> testRooms;
-
+  /**
+   * set up for room tests.
+   */
   @Before
   public void setUp4() {
-      
-      testRooms = world.getRooms();
-      
-      testPet = new Pet("TestPet", testRooms.get(0), testRooms);
+
+    testRooms = world.getRooms();
+
+    testPet = new Pet("TestPet", testRooms.get(0), testRooms);
   }
 
   @Test
   public void testConstructor() {
-      assertEquals("TestPet", testPet.getName());
-      assertEquals(0, testPet.getPetPosition());
-      assertEquals(testRooms.get(0), testPet.getCurrentRoom());
-      assertTrue(testPet.getVisitedRooms().isEmpty());
-      assertEquals(testRooms, testPet.getAllRooms());
+    assertEquals("TestPet", testPet.getName());
+    assertEquals(0, testPet.getPetPosition());
+    assertEquals(testRooms.get(0), testPet.getCurrentRoom());
+    assertTrue(testPet.getVisitedRooms().isEmpty());
+    assertEquals(testRooms, testPet.getAllRooms());
   }
 
   @Test
   public void testSetPetPosition() {
-      testPet.setPetPosition(1);
-      assertEquals(1, testPet.getPetPosition());
+    testPet.setPetPosition(1);
+    assertEquals(1, testPet.getPetPosition());
   }
 
   @Test
-  public void testSetCurrentRoom()  {
-      Room newRoom = testRooms.get(5);
-      testPet.setCurrentRoom(newRoom);
-      assertEquals(newRoom, testPet.getCurrentRoom());
+  public void testSetCurrentRoom() {
+    Room newRoom = testRooms.get(5);
+    testPet.setCurrentRoom(newRoom);
+    assertEquals(newRoom, testPet.getCurrentRoom());
   }
 
   @Test
   public void testSetVisitedRooms() {
-      Room room1 = testRooms.get(0);
-      Room room2 = testRooms.get(4);
-      Set<Room> visitedRooms = new HashSet<>(Arrays.asList(room1, room2));
+    Room room1 = testRooms.get(0);
+    Room room2 = testRooms.get(4);
+    Set<Room> visitedRooms = new HashSet<>(Arrays.asList(room1, room2));
 
-      testPet.setVisitedRooms(visitedRooms);
-      assertEquals(visitedRooms, testPet.getVisitedRooms());
+    testPet.setVisitedRooms(visitedRooms);
+    assertEquals(visitedRooms, testPet.getVisitedRooms());
   }
 
   @Test
   public void testMove2() {
-      Room room1 = testRooms.get(0);
-      Room room2 = testRooms.get(1);
-      Room room3 = testRooms.get(3);
+    Room room1 = testRooms.get(0);
+    Room room2 = testRooms.get(1);
+    Room room3 = testRooms.get(3);
 
-      List<Room> rooms = Arrays.asList(room1, room2, room3);
-      Pet pet = new Pet("TestPet", room1, rooms);
+    List<Room> rooms = Arrays.asList(room1, room2, room3);
+    Pet pet = new Pet("TestPet", room1, rooms);
 
-      // Perform moves
-      pet.move(); // Move 1
-      assertEquals(1, pet.getPetPosition());
-      assertTrue(pet.getVisitedRooms().contains(room1));
+    // Perform moves
+    pet.move(); // Move 1
+    assertEquals(1, pet.getPetPosition());
+    assertTrue(pet.getVisitedRooms().contains(room1));
 
-      pet.move(); // Move 2
-      assertEquals(3, pet.getPetPosition());
-      assertTrue(pet.getVisitedRooms().contains(room2));
+    pet.move(); // Move 2
+    assertEquals(3, pet.getPetPosition());
+    assertTrue(pet.getVisitedRooms().contains(room2));
 
-      pet.move(); // Move 3
-      assertEquals(0, pet.getPetPosition()); // Should wrap around to the first room
-      assertTrue(pet.getVisitedRooms().contains(room3));
+    pet.move(); // Move 3
+    assertEquals(0, pet.getPetPosition()); // Should wrap around to the first room
+    assertTrue(pet.getVisitedRooms().contains(room3));
 
-      pet.move(); // Move 4
-      assertEquals(1, pet.getPetPosition());
-      assertTrue(pet.getVisitedRooms().contains(room1));
+    pet.move(); // Move 4
+    assertEquals(1, pet.getPetPosition());
+    assertTrue(pet.getVisitedRooms().contains(room1));
 
   }
-
-  
 
 }

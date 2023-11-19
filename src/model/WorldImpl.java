@@ -7,6 +7,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * the class for handling the world creation and updating.
+ */
 public class WorldImpl implements WorldInterface {
 
   private TargetCharacter targetCharacter;
@@ -29,91 +32,84 @@ public class WorldImpl implements WorldInterface {
 
     this.rooms = new ArrayList<>(); // Initialize the rooms list
     this.items = new ArrayList<>(); // Initialize the items list
-    this.players = new ArrayList<>();//Initialized here but will be updated in controller.
+    this.players = new ArrayList<>(); // Initialized here but will be updated in controller.
     this.end = false;
     parseWorldFromFile(file);
 
   }
-  
-  
 
   public int getNumRows() {
     return numRows;
   }
 
-
-
   public int getNumCols() {
     return numColumns;
   }
-  
-  
+
   public boolean getIsEnd() {
-    
+
     return end;
   }
-
 
   public TargetCharacter getTargetCharacter() {
     return targetCharacter;
   }
 
-  public void setTargetCharacter(TargetCharacter targetCharacter) {
-    this.targetCharacter = targetCharacter;
+  public void setTargetCharacter(TargetCharacter targetCharacterIn) {
+    this.targetCharacter = targetCharacterIn;
   }
 
   public Pet getPet() {
     return pet;
   }
 
-  public void setPet(Pet pet) {
-    this.pet = pet;
+  public void setPet(Pet petIn) {
+    this.pet = petIn;
   }
 
   public List<Room> getRooms() {
     return rooms;
   }
 
-  public void setRooms(List<Room> rooms) {
-    this.rooms = rooms;
+  public void setRooms(List<Room> roomsIn) {
+    this.rooms = roomsIn;
   }
 
   public List<Item> getItems() {
     return items;
   }
 
-  public void setItems(List<Item> items) {
-    this.items = items;
+  public void setItems(List<Item> itemsIn) {
+    this.items = itemsIn;
   }
 
   public String getWorldName() {
     return worldName;
   }
 
-  public void setWorldName(String worldName) {
-    this.worldName = worldName;
+  public void setWorldName(String worldNameIn) {
+    this.worldName = worldNameIn;
   }
 
   public int getNumRooms() {
     return rooms.size();
   }
-  
+
   public int getNumItems() {
     return items.size();
   }
-  
-  
+
   public List<Player> getPlayers() {
     return players;
   }
 
-  public void setPlayers(List<Player> players) {
-    this.players = players;
+  public void setPlayers(List<Player> playersIn) {
+    this.players = playersIn;
   }
-  
+
   public void addPlayer(Player player) {
     players.add(player);
-}
+  }
 
   @Override
   public void parseWorldFromFile(File file) {
@@ -148,7 +144,8 @@ public class WorldImpl implements WorldInterface {
 
         this.targetCharacter = new TargetCharacter(
             Integer.parseInt(targetCharacterDescriptionParts[0]),
-            targetCharacterDescriptionParts[1] + " " + targetCharacterDescriptionParts[2], numRooms);
+            targetCharacterDescriptionParts[1] + " " + targetCharacterDescriptionParts[2],
+            numRooms);
       }
 
       // Parse the rooms
@@ -295,7 +292,7 @@ public class WorldImpl implements WorldInterface {
       items.removeIf(item -> item.getRoomIndex() == roomIndex && item.equals(itemToRemove));
     }
   }
-  
+
   /**
    * Adds an item to the room with the given index.
    *
@@ -303,19 +300,16 @@ public class WorldImpl implements WorldInterface {
    * @param item      The item to be added to the room.
    */
   public void addItemToRoom(int roomIndex, Item item) {
-      // Find the room with the specified index
-      Room targetRoom = rooms.stream().filter(room -> room.getIndex() == roomIndex).findFirst()
-              .orElse(null);
+    // Find the room with the specified index
+    Room targetRoom = rooms.stream().filter(room -> room.getIndex() == roomIndex).findFirst()
+        .orElse(null);
 
-      if (targetRoom != null) {
-          // Add the item to the room
-        Item newItem = new Item(item.getRoomIndex(), item.getDamage(), item.getName());
-        
-        items.add(newItem);
+    if (targetRoom != null) {
+      // Add the item to the room
+      Item newItem = new Item(item.getRoomIndex(), item.getDamage(), item.getName());
 
-      }
+      items.add(newItem);
+
+    }
   }
 }
-
-
-

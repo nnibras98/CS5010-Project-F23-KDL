@@ -3,13 +3,15 @@ package model;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * class for human player creation and execution.
+ */
 public class HumanPlayer extends Player {
 
-  int currentRoomIndex;
-  int maxCarryLimit;
-  WorldInterface world;
-  Scanner scanner;
-  
+  private int currentRoomIndex;
+  private final int maxCarryLimit;
+  private final WorldInterface world;
+  private Scanner scanner;
 
   /**
    * Human Player Constructor.
@@ -33,9 +35,10 @@ public class HumanPlayer extends Player {
     return currentRoomIndex;
   }
 
-  public void setCurrentRoomIndex(int currentRoomIndex) {
-    this.currentRoomIndex = currentRoomIndex;
+  public void setCurrentRoomIndex(int currentRoomIndexIn) {
+    this.currentRoomIndex = currentRoomIndexIn;
   }
+
 
   @Override
   public void move() {
@@ -63,7 +66,7 @@ public class HumanPlayer extends Player {
           // Implement the logic to update player's position or perform other actions
           super.setCurrentRoomIndex(selectedRoom.getIndex());
           this.setCurrentRoomIndex(selectedRoom.getIndex());
-          
+
           setLookAroundUsedLastTurn(false);
 
         } else {
@@ -110,7 +113,7 @@ public class HumanPlayer extends Player {
             super.addToInventory(selectedItem);
             // Remove the picked-up item from the room
             world.removeItemFromRoom(currentRoom.getIndex(), selectedItem);
-            
+
             setLookAroundUsedLastTurn(false);
           } else {
             System.out.println(
@@ -159,7 +162,7 @@ public class HumanPlayer extends Player {
 
           // Add the dropped item to the current room
           world.addItemToRoom(currentRoom.getIndex(), droppedItem);
-          
+
           setLookAroundUsedLastTurn(false);
 
         } else {
@@ -172,5 +175,4 @@ public class HumanPlayer extends Player {
     }
   }
 
-  
 }

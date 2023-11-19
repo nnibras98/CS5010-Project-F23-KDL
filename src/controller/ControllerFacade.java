@@ -3,66 +3,94 @@ package controller;
 import model.Player;
 import model.WorldInterface;
 
+/**
+ * Brings all the controller methods in one place.
+ */
 public class ControllerFacade {
-  
-  private final WorldInterface world;
-  
 
-  public ControllerFacade(WorldInterface world) {
-    this.world = world;
+  private final WorldInterface world;
+
+  public ControllerFacade(WorldInterface worldIn) {
+    this.world = worldIn;
   }
-  
-  
-  
+
   public WorldInterface getWorld() {
     return world;
   }
 
-
-
-  //just added this to make it more modular
+  /**
+   * player action generic.
+   * @param player player type.
+   * @param commandType interface.
+   */
   public void playerAction(Player player, CommandInterface commandType) {
-    
-    commandType.execute();
-    
-  }
 
-  public void playerMove(Player currentPlayer) {
-    
-    CommandInterface pMove = new PlayerMove(currentPlayer);
-    pMove.execute();
+    commandType.execute();
+
   }
   
+  /**
+   * player move.
+   * @param currentPlayer take in player.
+   */
+  public void playerMove(Player currentPlayer) {
+
+    CommandInterface playerMove = new PlayerMove(currentPlayer);
+    playerMove.execute();
+  }
+
+  /**
+   * player look around.
+   * @param currentPlayer take in player.
+   */
   public void playerLookAround(Player currentPlayer) {
-    
-    CommandInterface pLookAround = new PlayerLookAround(currentPlayer);
-    pLookAround.execute();
+
+    CommandInterface playerLookAround = new PlayerLookAround(currentPlayer);
+    playerLookAround.execute();
   }
 
+  /**
+   * player pick up item.
+   * @param currentPlayer take in player.
+   */
   public void playerPickUpItem(Player currentPlayer) {
-    
-    CommandInterface pPickUp = new PlayerPickUpItem(currentPlayer);
-    pPickUp.execute();
+
+    CommandInterface playerPickUp = new PlayerPickUpItem(currentPlayer);
+    playerPickUp.execute();
   }
 
+  /**
+   * player drop item.
+   * @param currentPlayer take in player.
+   */
   public void playerDropItem(Player currentPlayer) {
-    
-    CommandInterface pDrop = new PlayerDropItem(currentPlayer);
-    pDrop.execute();
+
+    CommandInterface playerDrop = new PlayerDropItem(currentPlayer);
+    playerDrop.execute();
   }
 
+  /**
+   * player kill attempt.
+   * @param currentPlayer take in player.
+   */
   public void playerKillAttempt(Player currentPlayer) {
-    
-    CommandInterface pKillAttempt = new PlayerKillAttempt(currentPlayer);
-    pKillAttempt.execute();
+
+    CommandInterface playerKillAttempt = new PlayerKillAttempt(currentPlayer);
+    playerKillAttempt.execute();
   }
 
-  public void PetMove() {
+  /**
+   * pet move.
+   */
+  public void petMove() {
     CommandInterface petMove = new PetMove(world.getPet());
     petMove.execute();
   }
 
-  public void TargetCharacterMove() {
+  /**
+   * target move.
+   */
+  public void targetCharacterMove() {
 
     CommandInterface targetCharacterMove = new TargetCharacterMove(world.getTargetCharacter());
     targetCharacterMove.execute();

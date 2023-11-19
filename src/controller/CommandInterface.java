@@ -5,10 +5,10 @@ package controller;
  */
 
 public interface CommandInterface {
-  
+
   /**
    * Executes commands based on selection of user.
    */
   void execute();
-  
+
 }

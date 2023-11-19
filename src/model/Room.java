@@ -9,22 +9,22 @@ import java.util.List;
 
 public class Room {
 
-  private int upperLeftRow;
-  private int upperLeftColumn;
-  private int lowerRightRow;
-  private int lowerRightColumn;
-  private int index;
-  private String name;
+  private final int upperLeftRow;
+  private final int upperLeftColumn;
+  private final int lowerRightRow;
+  private final int lowerRightColumn;
+  private final int index;
+  private final String name;
 
   /**
    * constructor for room.
    * 
-   * @param upperLeftRowIn              walls of the room.
-   * @param upperLeftColumnIn           walls of the room.
-   * @param lowerRightRowIn             walls of the room.
-   * @param lowerRightColumnumnumnumnIn walls of the room.
-   * @param nameIn                      name of the room.
-   * @param indexIn                     placement of the room.
+   * @param upperLeftRowIn     walls of the room.
+   * @param upperLeftColumnIn  walls of the room.
+   * @param lowerRightRowIn    walls of the room.
+   * @param lowerRightColumnIn walls of the room.
+   * @param nameIn             name of the room.
+   * @param indexIn            placement of the room.
    */
 
   public Room(int upperLeftRowIn, int upperLeftColumnIn, int lowerRightRowIn,
@@ -84,7 +84,7 @@ public class Room {
   /**
    * checks whether two rooms are neighbors or not.
    * 
-   * @param otherRoom takes the other room
+   * @param other takes the other room
    * @return true or false
    */
 

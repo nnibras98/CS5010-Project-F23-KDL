@@ -6,15 +6,17 @@ package model;
 public class Item {
 
   private int roomIndex;
-  private int damage;
-  private String name;
+  private final int damage;
+  private final String name;
+
   /**
    * Item constructor.
+   * 
    * @param roomIndexIn position of the room.
-   * @param damageIn health of target reduced by damage value.
-   * @param nameIn name of the item
+   * @param damageIn    health of target reduced by damage value.
+   * @param nameIn      name of the item
    */
-  
+
   public Item(int roomIndexIn, int damageIn, String nameIn) {
 
     this.roomIndex = roomIndexIn;

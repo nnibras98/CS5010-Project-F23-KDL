@@ -6,15 +6,16 @@ package model;
 
 public class TargetCharacter {
   private int health;
-  private String name;
+  private final String name;
   private int characterPositionIndex;
-  private int numRooms;
+  private final int numRooms;
 
   /**
    * Constructor for target character.
    * 
    * @param healthIn health of target.
    * @param nameIn   name of target.
+   * @param numRoomsIn the number of rooms.
    */
 
   public TargetCharacter(int healthIn, String nameIn, int numRoomsIn) {
@@ -36,14 +37,10 @@ public class TargetCharacter {
     return name;
   }
 
-  public void setName(String nameIn) {
-    this.name = nameIn;
-  }
-
   public int getCharacterPositionIndex() {
     return characterPositionIndex;
   }
-  
+
   public int getNumRooms() {
     return numRooms;
   }
@@ -69,7 +66,7 @@ public class TargetCharacter {
    * @param damage - this is the damage caused.
    */
   public void takeDamage(int damage) {
-    
+
     int damageVal = health - damage;
     setHealth(damageVal);
 
