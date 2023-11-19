@@ -43,6 +43,10 @@ public class TargetCharacter {
   public int getCharacterPositionIndex() {
     return characterPositionIndex;
   }
+  
+  public int getNumRooms() {
+    return numRooms;
+  }
 
   /**
    * moves character forward by 1 room.

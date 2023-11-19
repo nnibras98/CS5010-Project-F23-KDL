@@ -32,13 +32,13 @@ public class GameSetupHandler {
 
   public void showIntro() {
     // Display welcome message and general info about the world
-    System.out.println("Welcome to " + world.getWorldName());
+    System.out.println("Welcome to " + modelFacade.getWorldName());
     System.out.println(
-        "Your target character's name is " + world.getTargetCharacter().getName());
+        "Your target character's name is " + modelFacade.getTargetCharacterName());
     System.out.println("The target character starts with "
-        + world.getTargetCharacter().getHealth() + " health points");
+        + modelFacade.getTargetCharacterHealth() + " health points");
     System.out.println("The target character has a special pet named as "
-        + world.getPet().getName());
+        + modelFacade.getPetName());
     System.out.println("");
 
     // Prompt user for rules
@@ -49,10 +49,10 @@ public class GameSetupHandler {
     if (input1.equals("y")) {
       System.out
           .println("There are " + gameFacade.getWorld().getNumRooms() + "room(s) in the game");
-      printRoomInfo(world);
+      printRoomInfo();
       System.out
           .println("There are " + gameFacade.getWorld().getNumItems() + "item(s) in the game");
-      printItemInfo(world);
+      printItemInfo();
       printGameRules();
     }
 
@@ -69,9 +69,9 @@ public class GameSetupHandler {
 
   }
 
-  private void printRoomInfo(WorldInterface world) {
+  private void printRoomInfo() {
     // Get all rooms in the world
-    List<Room> allRooms = world.getRooms();
+    List<Room> allRooms = modelFacade.getAllRooms();
 
     System.out.println("");
 
@@ -89,9 +89,9 @@ public class GameSetupHandler {
     System.out.println("");
   }
 
-  private void printItemInfo(WorldInterface world) {
+  private void printItemInfo() {
     // Get all items in the world
-    List<Item> allItems = world.getItems();
+    List<Item> allItems = modelFacade.getAllItems();
 
     System.out.println("");
 
@@ -101,7 +101,7 @@ public class GameSetupHandler {
       // Display information for each item
       for (Item item : allItems) {
         int roomIndex = item.getRoomIndex();
-        String roomName = world.getRoomByIndex(roomIndex).getName();
+        String roomName = modelFacade.getRoomNameByRoomIndex(roomIndex);
 
         System.out.println("Item: " + item.getName() + " found in " + roomName);
       }
@@ -188,7 +188,7 @@ public class GameSetupHandler {
                                                                                               // entry
                                                                                               // room
                                                                                               // index
-      int randomCarryingCapacity = (int) (Math.random() * 50); // Random carrying capacity
+      int randomCarryingCapacity = (int) (Math.random() * 10); // Random carrying capacity
 
       Player computerPlayer = new ComputerPlayer("Computer Player " + (i + 1),
           randomCarryingCapacity, randomEntryRoomIndex, world);
@@ -211,6 +211,11 @@ public class GameSetupHandler {
       // Prompt for carrying capacity
       System.out.print("Enter carrying capacity: ");
       int carryingCapacity = scanner.nextInt();
+      if (carryingCapacity > 10) {
+        System.out.print("Carrying capacity cannot exceed 10, setting the capacity to 10...");
+        carryingCapacity = 10;
+        System.out.print("Capacity set to 10");
+      }
       scanner.nextLine(); // Consume the newline character
 
       // Create human player with specified details and add to the world
@@ -236,7 +241,7 @@ public class GameSetupHandler {
 
   private void viewPlayerInfo() {
     // Get the list of players from the world
-    List<Player> players = world.getPlayers();
+    List<Player> players = modelFacade.getAllPlayers();
 
     if (!players.isEmpty()) {
       System.out.println("Player Information:");
@@ -266,7 +271,7 @@ public class GameSetupHandler {
     int maxTurns = scanner.nextInt();
 
     // Get the list of players from the world
-    List<Player> players = world.getPlayers();
+    List<Player> players = modelFacade.getAllPlayers();
 
     // Game loop
     for (int turn = 1; turn <= maxTurns; turn++) {
@@ -290,7 +295,7 @@ public class GameSetupHandler {
         displayGameState();
 
         // Check winning condition after each turn
-        if (world.getTargetCharacter().getHealth() <= 0) {
+        if (modelFacade.getTargetCharacterHealth() <= 0) {
           System.out.println("\nPlayer " + player.getName() + " wins!");
           return;
         }
@@ -309,12 +314,10 @@ public class GameSetupHandler {
     System.out.println("3. Move");
     
     // Check if human player and pet are in the same room
-    boolean sameRoomPet =  (humanPlayer.getCurrentRoomIndex() == world
-        .getPet().getPetPosition());
+    boolean sameRoomPet =  (humanPlayer.getCurrentRoomIndex() == modelFacade.getPetPosition());
     
     // Check if human player and target are in the same room
-    boolean sameRoomTarget = (humanPlayer.getCurrentRoomIndex() == world
-        .getTargetCharacter().getCharacterPositionIndex());
+    boolean sameRoomTarget = (humanPlayer.getCurrentRoomIndex() == modelFacade.getTargetCharacterPosition());
 
     // Check if the human player and target character are in the same room with no pet
     if (!sameRoomPet && sameRoomTarget) {
@@ -365,8 +368,7 @@ public class GameSetupHandler {
     System.out.println("3. Move");
 
     // Check if computer player and target are in the same room
-    boolean sameRoomTarget = (computerPlayer.getCurrentRoomIndex() == world
-        .getTargetCharacter().getCharacterPositionIndex());
+    boolean sameRoomTarget = (computerPlayer.getCurrentRoomIndex() == modelFacade.getTargetCharacterPosition());
    
 
     if (sameRoomTarget) {
@@ -414,7 +416,7 @@ public class GameSetupHandler {
     System.out.println("\nCurrent Game State:");
 
     // Display player positions and inventory
-    List<Player> players = world.getPlayers();
+    List<Player> players = modelFacade.getAllPlayers();
     for (Player player : players) {
       StringBuilder inventoryString = new StringBuilder();
       for (Item item : player.getInventory()) {
@@ -432,12 +434,12 @@ public class GameSetupHandler {
 
 
     // Display target character's position and health
-    TargetCharacter targetCharacter = world.getTargetCharacter();
+    TargetCharacter targetCharacter = modelFacade.getTargetCharacter();
     System.out.println("Target Character - Room: " + targetCharacter.getCharacterPositionIndex()
         + ", Health: " + targetCharacter.getHealth());
 
     // Display pet's position
-    Pet pet = world.getPet();
+    Pet pet = modelFacade.getPet();
     System.out.println("Pet - Room: " + pet.getPetPosition());
   }
 

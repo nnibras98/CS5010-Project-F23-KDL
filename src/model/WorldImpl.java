@@ -46,7 +46,12 @@ public class WorldImpl implements WorldInterface {
   public int getNumCols() {
     return numColumns;
   }
-
+  
+  
+  public boolean getIsEnd() {
+    
+    return end;
+  }
 
 
   public TargetCharacter getTargetCharacter() {
@@ -143,8 +148,7 @@ public class WorldImpl implements WorldInterface {
 
         this.targetCharacter = new TargetCharacter(
             Integer.parseInt(targetCharacterDescriptionParts[0]),
-            targetCharacterDescriptionParts[1] + " " + targetCharacterDescriptionParts[2],
-            numRooms);
+            targetCharacterDescriptionParts[1] + " " + targetCharacterDescriptionParts[2], numRooms);
       }
 
       // Parse the rooms
