@@ -126,5 +126,31 @@ public class GamePlayTest {
     // Verify that the correct information is printed to the console
     assertTrue(outContent.toString().contains("Attempt could not be made. No damage done."));
   }
+  
+  @Test
+  public void testTargetMove() {
+
+    world.getTargetCharacter().move();
+    world.getTargetCharacter().move();
+
+    // Verify that the correct information is printed to the console
+    assertEquals(2, world.getTargetCharacter().getCharacterPositionIndex());
+  }
+  
+  @Test
+  public void testPetDfsMove() {
+
+    world.getPet().move();
+
+    // Verify that the correct information is printed to the console
+    assertEquals(1, world.getPet().getPetPosition());
+    
+    world.getPet().move();
+
+    // Verify that the correct information is printed to the console
+    assertEquals(3, world.getPet().getPetPosition());
+    
+    
+  }
 
 }

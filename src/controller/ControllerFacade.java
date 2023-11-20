@@ -10,10 +10,18 @@ public class ControllerFacade {
 
   private final WorldInterface world;
 
+  /**
+   * constructor.
+   * @param worldIn the world.
+   */
   public ControllerFacade(WorldInterface worldIn) {
     this.world = worldIn;
   }
-
+  
+  /**
+   * world getter.
+   * @return world.
+   */
   public WorldInterface getWorld() {
     return world;
   }

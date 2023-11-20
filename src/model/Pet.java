@@ -6,7 +6,7 @@ import java.util.Set;
 import java.util.Stack;
 
 /**
- * pet creation class.
+ * Class representing a pet and its movement in the game.
  */
 public class Pet {
 
@@ -18,56 +18,95 @@ public class Pet {
   private Stack<Room> stack;
   
   /**
-   * constructor for pet creation.
-   * @param nameIn name of the pet
-   * @param currentRoomIn entry room.
-   * @param allRoomsIn list of all rooms.
+   * Constructs a new Pet instance.
+   *
+   * @param nameIn        The name of the pet.
+   * @param currentRoomIn The initial room where the pet is placed.
+   * @param allRoomsIn    List of all rooms in the game.
    */
   public Pet(String nameIn, Room currentRoomIn, List<Room> allRoomsIn) {
-
     this.name = nameIn;
     this.currentRoom = currentRoomIn;
     this.allRooms = allRoomsIn;
     this.visitedRooms = new HashSet<>();
     this.stack = new Stack<>();
     this.petPosition = 0;
-
   }
 
+  /**
+   * Gets the name of the pet.
+   *
+   * @return The name of the pet.
+   */
   public String getName() {
     return name;
   }
 
+  /**
+   * Gets the current position of the pet.
+   *
+   * @return The current position of the pet.
+   */
   public int getPetPosition() {
     return petPosition;
   }
 
+  /**
+   * Sets the position of the pet.
+   *
+   * @param petPositionIn The new position of the pet.
+   */
   public void setPetPosition(int petPositionIn) {
     this.petPosition = petPositionIn;
   }
 
+  /**
+   * Gets the current room where the pet is located.
+   *
+   * @return The current room of the pet.
+   */
   public Room getCurrentRoom() {
     return currentRoom;
   }
 
+  /**
+   * Sets the current room of the pet.
+   *
+   * @param currentRoomIn The new current room of the pet.
+   */
   public void setCurrentRoom(Room currentRoomIn) {
     this.currentRoom = currentRoomIn;
   }
 
+  /**
+   * Gets the set of visited rooms by the pet.
+   *
+   * @return The set of visited rooms.
+   */
   public Set<Room> getVisitedRooms() {
     return visitedRooms;
   }
 
+  /**
+   * Sets the set of visited rooms by the pet.
+   *
+   * @param visitedRoomsIn The new set of visited rooms.
+   */
   public void setVisitedRooms(Set<Room> visitedRoomsIn) {
     this.visitedRooms = visitedRoomsIn;
   }
 
+  /**
+   * Gets the list of all rooms in the game.
+   *
+   * @return The list of all rooms.
+   */
   public List<Room> getAllRooms() {
     return allRooms;
   }
 
   /**
-   *  DFS movement of the pet.
+   * Performs DFS movement of the pet in the game.
    */
   public void move() {
     // If all rooms have been visited, start over from the first room

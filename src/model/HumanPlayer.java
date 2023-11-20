@@ -4,7 +4,8 @@ import java.util.List;
 import java.util.Scanner;
 
 /**
- * class for human player creation and execution.
+ * Represents a human player in the game.
+ * This class extends the base Player class and includes logic for human player actions.
  */
 public class HumanPlayer extends Player {
 
@@ -14,12 +15,12 @@ public class HumanPlayer extends Player {
   private Scanner scanner;
 
   /**
-   * Human Player Constructor.
-   * 
-   * @param nameIn             name.
-   * @param maxCarryLimitIn    max capacity.
-   * @param currentRoomIndexIn current room.
-   * @param worldIn            world.
+   * Constructs a new HumanPlayer instance.
+   *
+   * @param nameIn             The name of the human player.
+   * @param maxCarryLimitIn    The maximum capacity of the player's inventory.
+   * @param currentRoomIndexIn The initial index of the current room.
+   * @param worldIn            The world in which the player exists.
    */
   public HumanPlayer(String nameIn, int maxCarryLimitIn, int currentRoomIndexIn,
       WorldInterface worldIn) {
@@ -28,51 +29,54 @@ public class HumanPlayer extends Player {
     this.maxCarryLimit = maxCarryLimitIn;
     this.world = worldIn;
     this.scanner = new Scanner(System.in);
-
   }
 
+  /**
+   * Gets the current room index of the human player.
+   *
+   * @return The current room index.
+   */
   public int getCurrentRoomIndex() {
     return currentRoomIndex;
   }
 
+  /**
+   * Sets the current room index of the human player.
+   *
+   * @param currentRoomIndexIn The new current room index.
+   */
   public void setCurrentRoomIndex(int currentRoomIndexIn) {
     this.currentRoomIndex = currentRoomIndexIn;
   }
 
-
+  /**
+   * Overrides the move method to implement the logic for the human player's movement.
+   * The human player chooses a neighboring room to move into via user input.
+   */
   @Override
   public void move() {
-
-    // Get the current room of the player
     Room currentRoom = world.getRoomByIndex(currentRoomIndex);
 
     if (currentRoom != null) {
-      // Get neighbors of the current room
       List<Room> neighbors = world.getNeighborsByIndex(currentRoom.getIndex());
 
-      if (!neighbors.isEmpty()) { // Check if there are neighbors
-
+      if (!neighbors.isEmpty()) {
         System.out.println("Choose a room to move to:");
         for (int i = 0; i < neighbors.size(); i++) {
           System.out.println((i + 1) + ". " + neighbors.get(i).getName());
         }
 
-        int choice = scanner.nextInt(); // Read user input
+        int choice = scanner.nextInt();
 
         if (choice >= 1 && choice <= neighbors.size()) {
-          // Move to the selected room
           Room selectedRoom = neighbors.get(choice - 1);
           System.out.println("Moved to " + selectedRoom.getName());
-          // Implement the logic to update player's position or perform other actions
           super.setCurrentRoomIndex(selectedRoom.getIndex());
           this.setCurrentRoomIndex(selectedRoom.getIndex());
-
           setLookAroundUsedLastTurn(false);
-
         } else {
           System.out.println("Invalid choice. Please choose a valid room.");
         }
-
       } else {
         System.out.println("No neighboring rooms to move to.");
       }
@@ -80,50 +84,40 @@ public class HumanPlayer extends Player {
   }
 
   /**
-   * Allows the player to pick up an item in the current room, adding it to their
-   * inventory.
+   * Overrides the pickUp method to implement the logic for the human player picking up an item.
+   * The human player chooses an item in the current room to pick up via user input.
    */
   @Override
   public void pickUp() {
-    // Get the current room of the player
     Room currentRoom = world.getRoomByIndex(currentRoomIndex);
 
     if (currentRoom != null) {
-      // Get the items in the current room
       List<Item> itemsInRoom = world.getItemsByRoomIndex(currentRoom.getIndex());
 
-      if (!itemsInRoom.isEmpty()) { // Check if there are items in the room
-
+      if (!itemsInRoom.isEmpty()) {
         System.out.println("Items available to pick up:");
         for (int i = 0; i < itemsInRoom.size(); i++) {
           System.out.println((i + 1) + ". " + itemsInRoom.get(i).getName());
         }
 
         System.out.println("Choose an item to pick up:");
-        int choice = scanner.nextInt(); // Read user input
+        int choice = scanner.nextInt();
 
         if (choice >= 1 && choice <= itemsInRoom.size()) {
-          // Pick up the selected item
           Item selectedItem = itemsInRoom.get(choice - 1);
 
-          // Check if player's inventory can accommodate the item
           if (super.getInventory().size() <= maxCarryLimit) {
             System.out.println("Picked up " + selectedItem.getName());
-            // Implement the logic to update player's inventory or perform other actions
             super.addToInventory(selectedItem);
-            // Remove the picked-up item from the room
             world.removeItemFromRoom(currentRoom.getIndex(), selectedItem);
-
             setLookAroundUsedLastTurn(false);
           } else {
-            System.out.println(
-                super.getName() + " have reached maximum capacity. Cannot pick up more items.");
+            System.out.println(super.getName() + " has reached maximum capacity. "
+                + "Cannot pick up more items.");
           }
-
         } else {
           System.out.println("Invalid choice. Please choose a valid item.");
         }
-
       } else {
         System.out.println("No items available to pick up in the room.");
       }
@@ -131,48 +125,39 @@ public class HumanPlayer extends Player {
   }
 
   /**
-   * Allows the player to drop an item from their inventory in the current room.
+   * Overrides the drop method to implement the logic for the human player dropping an item.
+   * The human player chooses an item from their inventory 
+   * to drop in the current room via user input.
    */
   @Override
   public void drop() {
-    // Get the current room of the player
     Room currentRoom = world.getRoomByIndex(currentRoomIndex);
 
     if (currentRoom != null) {
-      // Get the items in the player's inventory
       List<Item> playerInventory = super.getInventory();
 
-      if (!playerInventory.isEmpty()) { // Check if the player has items in the inventory
-
+      if (!playerInventory.isEmpty()) {
         System.out.println("Items in your inventory:");
         for (int i = 0; i < playerInventory.size(); i++) {
           System.out.println((i + 1) + ". " + playerInventory.get(i).getName());
         }
 
         System.out.println("Choose an item to drop:");
-        int choice = scanner.nextInt(); // Read user input
+        int choice = scanner.nextInt();
 
         if (choice >= 1 && choice <= playerInventory.size()) {
-          // Drop the selected item
           Item droppedItem = playerInventory.get(choice - 1);
           System.out.println("Dropped " + droppedItem.getName());
 
-          // Implement the logic to update player's inventory or perform other actions
           super.removeFromInventory(droppedItem);
-
-          // Add the dropped item to the current room
           world.addItemToRoom(currentRoom.getIndex(), droppedItem);
-
           setLookAroundUsedLastTurn(false);
-
         } else {
           System.out.println("Invalid choice. Please choose a valid item.");
         }
-
       } else {
         System.out.println("No items in your inventory to drop.");
       }
     }
   }
-
 }

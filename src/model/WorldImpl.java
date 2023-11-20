@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * the class for handling the world creation and updating.
+ * Implementation of the WorldInterface for handling world creation and updating.
  */
 public class WorldImpl implements WorldInterface {
 
@@ -24,96 +24,187 @@ public class WorldImpl implements WorldInterface {
   private boolean end;
 
   /**
-   * World object creation using text file.
+   * Constructs a WorldImpl object by reading information from a text file.
    * 
-   * @param file takes in a file.
+   * @param file The file containing world information.
    */
   public WorldImpl(File file) {
-
     this.rooms = new ArrayList<>(); // Initialize the rooms list
     this.items = new ArrayList<>(); // Initialize the items list
     this.players = new ArrayList<>(); // Initialized here but will be updated in controller.
     this.end = false;
     parseWorldFromFile(file);
-
   }
 
+  /**
+   * Gets the number of rows in the world.
+   * 
+   * @return The number of rows.
+   */
   public int getNumRows() {
     return numRows;
   }
 
+  /**
+   * Gets the number of columns in the world.
+   * 
+   * @return The number of columns.
+   */
   public int getNumCols() {
     return numColumns;
   }
 
+  /**
+   * Checks if the game has ended.
+   * 
+   * @return True if the game has ended, false otherwise.
+   */
   public boolean getIsEnd() {
-
     return end;
   }
 
+  /**
+   * Gets the target character in the world.
+   * 
+   * @return The target character.
+   */
   public TargetCharacter getTargetCharacter() {
     return targetCharacter;
   }
 
+  /**
+   * Sets the target character in the world.
+   * 
+   * @param targetCharacterIn The target character to set.
+   */
   public void setTargetCharacter(TargetCharacter targetCharacterIn) {
     this.targetCharacter = targetCharacterIn;
   }
 
+  /**
+   * Gets the pet in the world.
+   * 
+   * @return The pet.
+   */
   public Pet getPet() {
     return pet;
   }
 
+  /**
+   * Sets the pet in the world.
+   * 
+   * @param petIn The pet to set.
+   */
   public void setPet(Pet petIn) {
     this.pet = petIn;
   }
 
+  /**
+   * Gets the list of rooms in the world.
+   * 
+   * @return The list of rooms.
+   */
   public List<Room> getRooms() {
     return rooms;
   }
 
+  /**
+   * Sets the list of rooms in the world.
+   * 
+   * @param roomsIn The list of rooms to set.
+   */
   public void setRooms(List<Room> roomsIn) {
     this.rooms = roomsIn;
   }
 
+  /**
+   * Gets the list of items in the world.
+   * 
+   * @return The list of items.
+   */
   public List<Item> getItems() {
     return items;
   }
 
+  /**
+   * Sets the list of items in the world.
+   * 
+   * @param itemsIn The list of items to set.
+   */
   public void setItems(List<Item> itemsIn) {
     this.items = itemsIn;
   }
 
+  /**
+   * Gets the name of the world.
+   * 
+   * @return The name of the world.
+   */
   public String getWorldName() {
     return worldName;
   }
 
+  /**
+   * Sets the name of the world.
+   * 
+   * @param worldNameIn The name to set for the world.
+   */
   public void setWorldName(String worldNameIn) {
     this.worldName = worldNameIn;
   }
 
+  /**
+   * Gets the number of rooms in the world.
+   * 
+   * @return The number of rooms.
+   */
   public int getNumRooms() {
     return rooms.size();
   }
 
+  /**
+   * Gets the number of items in the world.
+   * 
+   * @return The number of items.
+   */
   public int getNumItems() {
     return items.size();
   }
 
+  /**
+   * Gets the list of players in the world.
+   * 
+   * @return The list of players.
+   */
   public List<Player> getPlayers() {
     return players;
   }
 
+  /**
+   * Sets the list of players in the world.
+   * 
+   * @param playersIn The list of players to set.
+   */
   public void setPlayers(List<Player> playersIn) {
     this.players = playersIn;
   }
 
+  /**
+   * Adds a player to the world.
+   * 
+   * @param player The player to add.
+   */
   public void addPlayer(Player player) {
     players.add(player);
   }
 
+  /**
+   * Parses world information from a file and initializes the world.
+   * 
+   * @param file The file containing world information.
+   */
   @Override
   public void parseWorldFromFile(File file) {
-
     try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
       // Read the first line to get the world description
       String worldDescription = reader.readLine();
@@ -222,14 +313,13 @@ public class WorldImpl implements WorldInterface {
       System.err.println("An error occurred while reading the file");
 
     }
-
   }
 
   /**
    * Method to get Room by using index.
    * 
-   * @param index position of the room.
-   * @return room or null depending on the validity of the index
+   * @param index The position of the room.
+   * @return The room or null depending on the validity of the index.
    */
   public Room getRoomByIndex(int index) {
     for (Room room : rooms) {
@@ -244,8 +334,8 @@ public class WorldImpl implements WorldInterface {
   /**
    * Method to get neighbors of a room by using its index.
    * 
-   * @param index position of the room.
-   * @return list of neighboring rooms or an empty list if the room is not found
+   * @param index The position of the room.
+   * @return The list of neighboring rooms or an empty list if the room is not found.
    */
   public List<Room> getNeighborsByIndex(int index) {
     Room currentRoom = getRoomByIndex(index);
@@ -259,7 +349,7 @@ public class WorldImpl implements WorldInterface {
 
   /**
    * Retrieves the items present in the specified room.
-   *
+   * 
    * @param roomIndex The index of the room to retrieve items from.
    * @return A list of items in the specified room.
    */
@@ -278,7 +368,7 @@ public class WorldImpl implements WorldInterface {
 
   /**
    * Removes the specified item from the room with the given index.
-   *
+   * 
    * @param roomIndex    The index of the room from which to remove the item.
    * @param itemToRemove The item to be removed from the room.
    */
@@ -295,7 +385,7 @@ public class WorldImpl implements WorldInterface {
 
   /**
    * Adds an item to the room with the given index.
-   *
+   * 
    * @param roomIndex The index of the room to which the item should be added.
    * @param item      The item to be added to the room.
    */
@@ -307,9 +397,7 @@ public class WorldImpl implements WorldInterface {
     if (targetRoom != null) {
       // Add the item to the room
       Item newItem = new Item(item.getRoomIndex(), item.getDamage(), item.getName());
-
       items.add(newItem);
-
     }
   }
 }

@@ -4,118 +4,135 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * a class for accessing all the essential methods from the model.
+ * Facade class providing access to essential methods in the model.
  */
 public class ModelFacade {
 
   private final WorldInterface world;
 
+  /**
+   * Constructs a new ModelFacade instance.
+   *
+   * @param worldIn The WorldInterface implementation.
+   */
   public ModelFacade(WorldInterface worldIn) {
     this.world = worldIn;
   }
-  
+
   /**
-   * get world.
-   * @return the world.
+   * Get the world.
+   *
+   * @return The world.
    */
   public WorldInterface getWorld() {
-
     return world;
-
   }
-  
+
   /**
-   * get world name.
-   * @return the world name.
+   * Get the name of the world.
+   *
+   * @return The name of the world.
    */
   public String getWorldName() {
-
     return new String(world.getWorldName());
-
   }
 
+  /**
+   * Get the target character.
+   *
+   * @return The target character.
+   */
   public TargetCharacter getTargetCharacter() {
     return world.getTargetCharacter();
   }
-  
+
   /**
-   * get the name of target.
-   * @return the target name.
+   * Get the name of the target character.
+   *
+   * @return The name of the target character.
    */
   public String getTargetCharacterName() {
-
     return new String(world.getTargetCharacter().getName());
-
   }
-  
+
   /**
-   * get target health.
-   * @return the target health.
+   * Get the health of the target character.
+   *
+   * @return The health of the target character.
    */
   public int getTargetCharacterHealth() {
-
-    return (world.getTargetCharacter().getHealth());
-
+    return world.getTargetCharacter().getHealth();
   }
 
+  /**
+   * Get the position of the target character.
+   *
+   * @return The position of the target character.
+   */
   public int getTargetCharacterPosition() {
-
     return world.getTargetCharacter().getCharacterPositionIndex();
   }
 
+  /**
+   * Get the pet.
+   *
+   * @return The pet.
+   */
   public Pet getPet() {
     return world.getPet();
   }
-  
+
   /**
-   * get the name of the pet.
-   * @return pet name.
+   * Get the name of the pet.
+   *
+   * @return The name of the pet.
    */
   public String getPetName() {
-
     return new String(world.getPet().getName());
-
   }
 
+  /**
+   * Get the position of the pet.
+   *
+   * @return The position of the pet.
+   */
   public int getPetPosition() {
-
     return world.getPet().getPetPosition();
   }
-  
+
   /**
-   * get the number of rooms.
-   * @return num of rooms.
+   * Get the number of rooms.
+   *
+   * @return The number of rooms.
    */
   public int getNumRooms() {
-
     return world.getNumRooms();
-
   }
-  
+
   /**
-   * get the number of items.
-   * @return num of items.
+   * Get the number of items.
+   *
+   * @return The number of items.
    */
   public int getNumItems() {
-
     return world.getNumItems();
-
   }
-  
+
   /**
-   * get all rooms.
-   * @return all rooms.
+   * Get all rooms.
+   *
+   * @return All rooms.
    */
   public List<Room> getAllRooms() {
-
     List<Room> copiedRooms = new ArrayList<>(world.getRooms());
     return copiedRooms;
   }
-  
+
   /**
-   * room by index.
-   * @param index of the room.
-   * @return the room.
+   * Get a room by index.
+   *
+   * @param index The index of the room.
+   * @return The room.
    */
   public Room getRoomByRoomIndex(int index) {
     Room originalRoom = world.getRoomByIndex(index);
@@ -126,37 +143,35 @@ public class ModelFacade {
 
     return copiedRoom;
   }
-  
+
   /**
-   * room name by index.
-   * @param index of the room.
-   * @return the room name.
+   * Get the name of a room by index.
+   *
+   * @param index The index of the room.
+   * @return The name of the room.
    */
   public String getRoomNameByRoomIndex(int index) {
     String roomName = world.getRoomByIndex(index).getName();
-
     return new String(roomName);
   }
-  
+
   /**
-   * all the items.
-   * @return all the items.
+   * Get all items.
+   *
+   * @return All items.
    */
   public List<Item> getAllItems() {
-
     List<Item> copiedItems = new ArrayList<>(world.getItems());
     return copiedItems;
   }
-  
+
   /**
-   * all the players.
-   * @return all the players.
+   * Get all players.
+   *
+   * @return All players.
    */
   public List<Player> getAllPlayers() {
-
     List<Player> copiedPlayers = new ArrayList<>(world.getPlayers());
-
     return copiedPlayers;
   }
-
 }

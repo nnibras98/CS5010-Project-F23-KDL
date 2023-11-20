@@ -1,9 +1,8 @@
 package model;
 
 /**
- * Helper class to build target character.
+ * Represents a target character in the game world.
  */
-
 public class TargetCharacter {
   private int health;
   private final String name;
@@ -11,13 +10,12 @@ public class TargetCharacter {
   private final int numRooms;
 
   /**
-   * Constructor for target character.
-   * 
-   * @param healthIn health of target.
-   * @param nameIn   name of target.
-   * @param numRoomsIn the number of rooms.
+   * Constructs a new TargetCharacter instance.
+   *
+   * @param healthIn            The initial health of the target character.
+   * @param nameIn              The name of the target character.
+   * @param numRoomsIn          The total number of rooms in the game.
    */
-
   public TargetCharacter(int healthIn, String nameIn, int numRoomsIn) {
     this.health = healthIn;
     this.name = nameIn;
@@ -25,51 +23,68 @@ public class TargetCharacter {
     this.characterPositionIndex = 0;
   }
 
+  /**
+   * Gets the current health of the target character.
+   *
+   * @return The current health value.
+   */
   public int getHealth() {
     return health;
   }
 
+  /**
+   * Sets the health of the target character.
+   *
+   * @param healthIn The new health value to set.
+   */
   public void setHealth(int healthIn) {
     this.health = healthIn;
   }
 
+  /**
+   * Gets the name of the target character.
+   *
+   * @return The name of the target character.
+   */
   public String getName() {
     return name;
   }
 
+  /**
+   * Gets the current position index of the target character.
+   *
+   * @return The current position index.
+   */
   public int getCharacterPositionIndex() {
     return characterPositionIndex;
   }
 
+  /**
+   * Gets the total number of rooms in the game.
+   *
+   * @return The total number of rooms.
+   */
   public int getNumRooms() {
     return numRooms;
   }
 
   /**
-   * moves character forward by 1 room.
+   * Moves the character forward by 1 room, wrapping around if necessary.
    */
-
   public void move() {
-
     if (characterPositionIndex > numRooms - 1) {
-
       characterPositionIndex = 0;
     }
-
     characterPositionIndex += 1;
-
   }
 
   /**
-   * reduces the health by damage.
-   * 
-   * @param damage - this is the damage caused.
+   * Reduces the health of the target character by the specified damage amount.
+   *
+   * @param damage The amount of damage to be applied.
    */
   public void takeDamage(int damage) {
-
-    int damageVal = health - damage;
-    setHealth(damageVal);
-
+    int newHealth = health - damage;
+    setHealth(newHealth);
   }
-
 }

@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Scanner;
 
 /**
- * Player Class.
+ * Abstract class representing a player in the game.
  */
 public abstract class Player {
 
@@ -20,51 +20,83 @@ public abstract class Player {
   private Scanner scanner;
 
   /**
-   * Player Constructor.
-   * 
-   * @param nameIn             name.
-   * @param maxCarryCapacityIn max capacity.
-   * @param currentRoomIndexIn current room.
-   * @param worldIn            the world.
+   * Constructs a new Player instance.
+   *
+   * @param nameIn             The name of the player.
+   * @param maxCarryCapacityIn The maximum carrying capacity of the player.
+   * @param currentRoomIndexIn The initial room index where the player is placed.
+   * @param worldIn            The world interface representing the game world.
    */
-
   public Player(String nameIn, int maxCarryCapacityIn, int currentRoomIndexIn,
       WorldInterface worldIn) {
-
     this.name = nameIn;
     this.maxCarryCapacity = maxCarryCapacityIn;
-    this.currentRoomIndex = currentRoomIndexIn; // Initialize the player in a starting room
+    this.currentRoomIndex = currentRoomIndexIn;
     this.inventory = new ArrayList<>();
     this.lookAroundUsedLastTurn = false;
     this.world = worldIn;
     this.scanner = new Scanner(System.in);
-
   }
 
+  /**
+   * Gets the name of the player.
+   *
+   * @return The name of the player.
+   */
   public String getName() {
     return name;
   }
 
+  /**
+   * Gets the current room index where the player is located.
+   *
+   * @return The current room index.
+   */
   public int getCurrentRoomIndex() {
     return currentRoomIndex;
   }
 
+  /**
+   * Sets the current room index of the player.
+   *
+   * @param currentRoomIndexIn The new current room index.
+   */
   public void setCurrentRoomIndex(int currentRoomIndexIn) {
     this.currentRoomIndex = currentRoomIndexIn;
   }
 
+  /**
+   * Gets the maximum carrying capacity of the player.
+   *
+   * @return The maximum carrying capacity.
+   */
   public int getMaxCarryCapacity() {
     return maxCarryCapacity;
   }
 
+  /**
+   * Gets the inventory of the player.
+   *
+   * @return The player's inventory.
+   */
   public List<Item> getInventory() {
     return inventory;
   }
 
+  /**
+   * Sets the inventory of the player.
+   *
+   * @param inventoryIn The new inventory of the player.
+   */
   public void setInventory(List<Item> inventoryIn) {
     this.inventory = inventoryIn;
   }
 
+  /**
+   * Sets whether the player used "lookAround" in the last turn.
+   *
+   * @param usedLastTurn True if "lookAround" was used, false otherwise.
+   */
   protected void setLookAroundUsedLastTurn(boolean usedLastTurn) {
     lookAroundUsedLastTurn = usedLastTurn;
   }
@@ -83,7 +115,7 @@ public abstract class Player {
 
   /**
    * Removes an item from the player's inventory.
-   * 
+   *
    * @param item The item to be removed.
    */
   public void removeFromInventory(Item item) {
@@ -104,18 +136,15 @@ public abstract class Player {
   }
 
   /**
-   * logic for look around.
+   * Performs the "lookAround" action, printing information about neighboring
+   * rooms.
    */
   public void lookAround() {
-
-    // Get the current room of the player
     Room currentRoom = world.getRoomByIndex(currentRoomIndex);
 
     if (currentRoom != null) {
-      // Get neighbors of the current room
       List<Room> neighbors = world.getNeighborsByIndex(currentRoom.getIndex());
 
-      // Print information about neighbors
       System.out.println(
           "Neighboring room(s) of " + world.getRoomByIndex(currentRoomIndex).getName() + "-");
       for (Room neighbor : neighbors) {
@@ -123,22 +152,17 @@ public abstract class Player {
       }
 
       setLookAroundUsedLastTurn(true);
-
     } else {
       System.out.println("Player is not in a valid room.");
     }
-
   }
 
   /**
-   * logic for kill attempt.
+   * Performs the "killAttempt" action, attempting to inflict damage on the target
+   * character.
    */
   public void killAttempt() {
-
-    // Unseen attacks are successful also cat should not not be present in the room.
-
     if (canMakeAttempt()) {
-
       doDamage();
       world.getTargetCharacter().takeDamage(damage);
       System.out.println("Attempt successful! " + world.getTargetCharacter().getName() + " loses "
@@ -146,12 +170,9 @@ public abstract class Player {
           + world.getTargetCharacter().getHealth());
 
       setLookAroundUsedLastTurn(false);
-
     } else {
-      // Seen attacks are automatically stopped
       System.out.println("Attempt could not be made. No damage done.");
     }
-
   }
 
   /**
@@ -160,41 +181,32 @@ public abstract class Player {
    * @return True if the player can make an attempt, false otherwise.
    */
   private boolean canMakeAttempt() {
-
-    // Check if the cat is in the room
     boolean catInRoom = world.getPet().getPetPosition() == currentRoomIndex;
-
-    // Check if there are other players in the room
     boolean otherPlayersInRoom = world.getPlayers().stream().filter(player -> player != this)
         .anyMatch(player -> player.getCurrentRoomIndex() == currentRoomIndex);
-
-    // Check if the previous turn used lookAround
-    boolean previousTurnLookAround = islookAroundUsedLastTurn();
-
-    // Implement additional conditions based on your game rules
-    // For example, you may want to add more checks depending on the game state
+    boolean previousTurnLookAround = isLookAroundUsedLastTurn();
 
     return !catInRoom && !otherPlayersInRoom && !previousTurnLookAround;
   }
 
-  private boolean islookAroundUsedLastTurn() {
+  /**
+   * Checks if the "lookAround" action was used in the last turn.
+   *
+   * @return True if "lookAround" was used, false otherwise.
+   */
+  private boolean isLookAroundUsedLastTurn() {
     return lookAroundUsedLastTurn;
   }
 
   /**
    * Computes the damage inflicted by the player's attempt.
-   *
-   * @return The amount of damage.
    */
   private void doDamage() {
     if (getInventory().isEmpty()) {
-      // Reduce the health of the target character by 1
       System.out.println("Poked the target character. Health reduced by 1");
       damage = 1;
     } else {
       if (this instanceof ComputerPlayer) {
-        // If the current player is a ComputerPlayer, automatically choose the item with
-        // the highest damage
         Item chosenItem = getInventory().stream().max(Comparator.comparingInt(Item::getDamage))
             .orElse(null);
 
@@ -208,7 +220,6 @@ public abstract class Player {
           damage = 0;
         }
       } else {
-        // If the current player is a HumanPlayer, prompt the player to choose an item
         System.out.println("Choose an item to use in the attempt:");
         for (int i = 0; i < getInventory().size(); i++) {
           System.out.println((i + 1) + ". " + getInventory().get(i).getName() + " , "
@@ -217,7 +228,6 @@ public abstract class Player {
 
         int choice = scanner.nextInt();
         if (choice >= 1 && choice <= getInventory().size()) {
-          // Return the damage value based on the chosen item
           Item chosenItem = getInventory().get(choice - 1);
           System.out.println("Used " + chosenItem.getName() + " in the attempt.");
           damage = chosenItem.getDamage();
@@ -230,13 +240,19 @@ public abstract class Player {
     }
   }
 
-  //
+  /**
+   * Abstract method for moving the player.
+   */
   public abstract void move();
 
-  //
+  /**
+   * Abstract method for picking up an item.
+   */
   public abstract void pickUp();
 
-  //
+  /**
+   * Abstract method for dropping an item.
+   */
   public abstract void drop();
 
 }
