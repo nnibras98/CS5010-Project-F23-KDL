@@ -1,4 +1,4 @@
-package controller;
+package textBasedController;
 
 /**
  * Interface for command design pattern.

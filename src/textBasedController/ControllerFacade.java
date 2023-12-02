@@ -1,4 +1,4 @@
-package controller;
+package textBasedController;
 
 import model.Player;
 import model.WorldInterface;

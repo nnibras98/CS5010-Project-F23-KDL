@@ -1,4 +1,4 @@
-package controller;
+package textBasedController;
 
 import java.util.InputMismatchException;
 import java.util.List;
@@ -363,7 +363,7 @@ public class GameSetupHandler {
         if (!sameRoomPet && sameRoomTarget) {
           gameFacade.playerKillAttempt(humanPlayer);
         } else {
-          System.out.println("Attack failed! Leo the cat was in the same room.");
+          System.out.println("Attack failed! " + world.getPet().getName() + " was in the same room.");
         }
         break;
       default:

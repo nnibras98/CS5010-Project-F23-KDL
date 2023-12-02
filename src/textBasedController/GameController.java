@@ -1,4 +1,4 @@
-package controller;
+package textBasedController;
 
 import java.io.File;
 import java.util.Scanner;
