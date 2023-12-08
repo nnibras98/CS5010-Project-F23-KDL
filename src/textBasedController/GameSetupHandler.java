@@ -200,7 +200,6 @@ public class GameSetupHandler {
     System.out.println("");
 
     // Create players based on user input
-    // Adjust this based on your player creation logic
     for (int i = 0; i < numComputerPlayers; i++) {
       // Create computer player and add to the world
       int randomEntryRoomIndex = (int) (Math.random() * gameFacade.getWorld().getNumRooms());

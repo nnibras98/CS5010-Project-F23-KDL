@@ -3,6 +3,14 @@ package model;
 import java.util.ArrayList;
 import java.util.List;
 
+import textBasedController.CommandInterface;
+import textBasedController.PetMove;
+import textBasedController.PlayerKillAttempt;
+import textBasedController.PlayerLookAround;
+import textBasedController.PlayerMove;
+import textBasedController.PlayerPickUpItem;
+import textBasedController.TargetCharacterMove;
+
 /**
  * Facade class providing access to essential methods in the model.
  */
@@ -173,5 +181,63 @@ public class ModelFacade {
   public List<Player> getAllPlayers() {
     List<Player> copiedPlayers = new ArrayList<>(world.getPlayers());
     return copiedPlayers;
+  }
+  
+  /**
+   * target move.
+   */
+  public void targetCharacterMove() {
+
+    CommandInterface targetCharacterMove = new TargetCharacterMove(world.getTargetCharacter());
+    targetCharacterMove.execute();
+
+  }
+  
+  /**
+   * pet move.
+   */
+  public void petMove() {
+    CommandInterface petMove = new PetMove(world.getPet());
+    petMove.execute();
+  }
+  
+  /**
+   * player kill attempt.
+   * @param currentPlayer take in player.
+   */
+  public void playerKillAttempt(Player currentPlayer) {
+
+    CommandInterface playerKillAttempt = new PlayerKillAttempt(currentPlayer);
+    playerKillAttempt.execute();
+  }
+  
+  /**
+   * player pick up item.
+   * @param currentPlayer take in player.
+   */
+  public void playerPickUpItem(Player currentPlayer) {
+
+    CommandInterface playerPickUp = new PlayerPickUpItem(currentPlayer);
+    playerPickUp.execute();
+  }
+  
+  /**
+   * player move.
+   * @param currentPlayer take in player.
+   */
+  public void playerMove(Player currentPlayer) {
+
+    CommandInterface playerMove = new PlayerMove(currentPlayer);
+    playerMove.execute();
+  }
+
+  /**
+   * player look around.
+   * @param currentPlayer take in player.
+   */
+  public void playerLookAround(Player currentPlayer) {
+
+    CommandInterface playerLookAround = new PlayerLookAround(currentPlayer);
+    playerLookAround.execute();
   }
 }
