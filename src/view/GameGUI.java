@@ -25,9 +25,8 @@ public class GameGUI extends JFrame {
   private int numTurns;
   private JPanel rulesScreen;
   private GameController gameController;
-  private WorldInterface world;
-  private BufferedImage worldImage;
   private List<Player> players;
+  private WorldPanel worldPanel;
 
   public GameGUI() {
 
@@ -38,6 +37,9 @@ public class GameGUI extends JFrame {
     setLayout(new CardLayout());
     add(startScreen, "start");
     add(rulesScreen, "rules");
+    worldPanel = new WorldPanel(); // Added this line
+    add(worldPanel, "world"); // Added this line
+
       
   }
 
@@ -232,7 +234,7 @@ public class GameGUI extends JFrame {
     startGameButton.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
-//        initializeGameScreen();
+        showGameScreen();
       }
     });
 
@@ -281,8 +283,8 @@ public class GameGUI extends JFrame {
           numTurns = Integer.parseInt(turnsInput);
           JOptionPane.showMessageDialog(this,
               "Setting up a New Game!\nFile Path: " + filePath + "\nNumber of Turns: " + numTurns);
-          this.gameController = new GameController(filePath, this);
-          showGameScreen();
+          gameController = new GameController(filePath, this);
+          showPlayerCreationScreen();
         } catch (NumberFormatException e) {
           JOptionPane.showMessageDialog(this, "Error: Please enter a valid number for turns.",
               "Error", JOptionPane.ERROR_MESSAGE);
@@ -309,7 +311,7 @@ public class GameGUI extends JFrame {
     }
   }
 
-  private void showGameScreen() {
+  private void showPlayerCreationScreen() {
 
     // Prompt the user for the number of human and computer players
     int numHumanPlayers = 0;
@@ -370,6 +372,32 @@ public class GameGUI extends JFrame {
     showRulesScreen();
     
 
+  }
+  
+  private void initializeGameScreen() {
+    
+    gameScreen = new JPanel(new BorderLayout());
+    
+    worldPanel.initializeWorld(gameController.getModel().getNumRows(), gameController.getModel().getNumCols(), gameController.getModel());
+    worldPanel.drawWorld();
+   
+    
+  }
+  
+  private void showGameScreen() {
+    // Initialize the game screen
+    initializeGameScreen();
+
+    // Add any other components or functionality specific to the game screen
+
+    // Switch to the game screen
+    CardLayout cardLayout = (CardLayout) getContentPane().getLayout();
+    cardLayout.show(getContentPane(), "world");
+}
+  
+  public WorldPanel getWorldPanel() {
+    
+    return worldPanel;
   }
 
 
