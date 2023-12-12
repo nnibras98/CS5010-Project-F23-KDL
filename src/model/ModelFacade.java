@@ -2,14 +2,13 @@ package model;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import textBasedController.CommandInterface;
-import textBasedController.PetMove;
-import textBasedController.PlayerKillAttempt;
-import textBasedController.PlayerLookAround;
-import textBasedController.PlayerMove;
-import textBasedController.PlayerPickUpItem;
-import textBasedController.TargetCharacterMove;
+import textcontroller.CommandInterface;
+import textcontroller.PetMove;
+import textcontroller.PlayerKillAttempt;
+import textcontroller.PlayerLookAround;
+import textcontroller.PlayerMove;
+import textcontroller.PlayerPickUpItem;
+import textcontroller.TargetCharacterMove;
 
 /**
  * Facade class providing access to essential methods in the model.

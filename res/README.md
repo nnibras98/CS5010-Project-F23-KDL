@@ -75,16 +75,21 @@ This test run covers various aspects of gameplay, including player actions, item
 The code is organized into the following key components:
 - `model`: Contains classes representing the game's model, such as `Player`, `Room`, `Item`, `Pet`, and `TargetCharacter`.
 - `controller`: Manages the game's logic, including player actions, turns, and setup.
+- `view`: Manages the show part of the game, this is where users interact.
 
 ## Design Changes
 
-In this edition significant refactoring has been done to accomodate for game play. Command Design Pattern has been implemented and I have tried to follow best practises as much as possible.
+In this edition significant refactoring has been done to accomodate for game play. Command Design Pattern has been implemented and I have tried to follow best practises as much as possible. The view is also added for last milestone.
 
 ## How to Run
 
 ### Using JAR File
 
 1. Double click on the setup.bat file to open the JAR file.
+
+Follow on-screen prompts to set up the game, create players, and start playing.
+
+2. Double click on JAR_MS4.jar file to open the JAR file.
 
 Follow on-screen prompts to set up the game, create players, and start playing.
 
